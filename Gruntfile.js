@@ -18,6 +18,7 @@ module.exports = function (grunt) {
   // Configurable paths
   var config = {
     app: 'app',
+    approot: 'app/scripts',
     dist: 'dist'
   };
 
@@ -26,6 +27,35 @@ module.exports = function (grunt) {
     // Project settings
     config: config,
 
+    browserify: {
+      options: {
+        preBundleCB: function (b) {
+          
+          b.plugin('remapify', [
+            {
+              src: '**/*.js',
+              cwd: grunt.config('config').approot,
+              expose: 'app'
+            }
+          ]);
+          console.log('uglify: ', grunt.option('uglify'));
+          b.plugin('minifyify',
+            {
+              minify: grunt.option('uglify') || false
+            }
+          );
+        }
+      },
+      opts: {
+        src: ['<%= config.app %>/scripts/options.js'],
+        dest: '<%= config.dist %>/scripts/options.js'
+      },
+      contentscript: {
+        src: ['<%= config.app %>/scripts/contentscript.js'],
+        dest: '<%= config.dist %>/scripts/contentscript.js'
+      }
+      
+    },
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -34,7 +64,7 @@ module.exports = function (grunt) {
       },
       js: {
         files: ['<%= config.app %>/scripts/{,*/}*.js'],
-        tasks: ['jshint'],
+        tasks: ['jshint', 'browserify'],
         options: {
           livereload: true
         }
@@ -143,7 +173,6 @@ module.exports = function (grunt) {
         dest: '<%= config.dist %>'
       },
       html: [
-        '<%= config.app %>/popup.html',
         '<%= config.app %>/options.html'
       ]
     },
@@ -201,33 +230,21 @@ module.exports = function (grunt) {
       }
     },
 
-    // By default, your `index.html`'s <!-- Usemin block --> will take care of
-    // minification. These next options are pre-configured if you do not wish
-    // to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/styles/main.css': [
-    //         '<%= config.app %>/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
-    // },
-    // uglify: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/scripts/scripts.js': [
-    //         '<%= config.dist %>/scripts/scripts.js'
-    //       ]
-    //     }
-    //   }
-    // },
-    // concat: {
-    //   dist: {}
-    // },
-
     // Copies remaining files to places other tasks can use
     copy: {
+      debug: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= config.app %>',
+          dest: '<%= config.dist %>',
+          src: [
+            'manifest.json',
+            'scripts/chromereload.js',
+            'images/{,*/}*.png'
+          ]
+        }]
+      },
       dist: {
         files: [{
           expand: true,
@@ -240,7 +257,7 @@ module.exports = function (grunt) {
             '{,*/}*.html',
             'styles/{,*/}*.css',
             'styles/fonts/{,*/}*.*',
-            '_locales/{,*/}*.json',
+            '_locales/{,*/}*.json'
           ]
         }]
       }
@@ -262,7 +279,7 @@ module.exports = function (grunt) {
     chromeManifest: {
       dist: {
         options: {
-          buildnumber: true,
+          buildnumber: false,
           background: {
             target: 'scripts/background.js',
             exclude: [
@@ -294,9 +311,16 @@ module.exports = function (grunt) {
     }
   });
 
+  grunt.registerTask('config:prod', function() {
+    grunt.option('uglify', true);
+  });
+  
   grunt.registerTask('debug', function () {
     grunt.task.run([
       'jshint',
+      'clean:dist',
+      'copy',
+      'browserify',
       'concurrent:chrome',
       'connect:chrome',
       'watch'
@@ -310,14 +334,14 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'config:prod',
     'chromeManifest:dist',
     'useminPrepare',
     'concurrent:dist',
     // No UI feature selected, cssmin task will be commented
     // 'cssmin',
-    'concat',
-    'uglify',
-    'copy',
+    'copy:dist',
+    'browserify',
     'usemin',
     'compress'
   ]);

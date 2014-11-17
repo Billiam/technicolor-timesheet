@@ -8,20 +8,14 @@
     "128": "images/icon-128.png"
   },
   "default_locale": "en",
-  "background": {
-    "scripts": [
-      "scripts/chromereload.js",
-      "scripts/background.js"
-    ]
-  },
+  "minimum_chrome_version": "32",
   "options_page": "options.html",
+  "permissions": ["storage"],
   "content_scripts": [
     {
       "matches": [
-        "https://mainframe.nerdery.com/timesheet.php*"
-      ],
-      "css": [
-        "styles/main.css"
+        "https://mainframe.nerdery.com/timesheet.php*",
+        "http://timesheet.local.dev:8080/*"
       ],
       "js": [
         "scripts/contentscript.js"
