@@ -40,7 +40,7 @@ var proto = Rules.prototype;
  * Fetch the raw collection data from storage and return as a promise
  * 
  * @method _getRulesData
- * @returns {Promise} 
+ * @return {Promise} 
  * @private
  */
 proto._getRulesData = function() {
@@ -62,7 +62,7 @@ proto._getRulesData = function() {
  * 
  * @method _parseRules
  * @param rules {Array} rule data 
- * @returns {Rule[]} Mapped rule instances
+ * @return {Rule[]} Mapped rule instances
  * @private
  */
 proto._parseRules = function(rules) {
@@ -75,7 +75,7 @@ proto._parseRules = function(rules) {
  * Fetch an array of available {{#crossLink "Rule"}}{{/crossLink}} instances
  * 
  * @method getRules
- * @returns {Promise} A promise that will be fulfilled with {{#crossLink "Rule"}}{{/crossLink}} instances
+ * @return {Promise} A promise that will be fulfilled with {{#crossLink "Rule"}}{{/crossLink}} instances
  */
 proto.getRules = function() {
   return this._getRulesData

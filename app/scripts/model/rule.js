@@ -40,7 +40,7 @@ var proto = Rule.prototype;
  * 
  * @method matches
  * @param {TimesheetEntry} row The entry to test against 
- * @returns {Boolean} Whether row can be said to match this rule's criteria
+ * @return {Boolean} Whether row can be said to match this rule's criteria
  */
 proto.matches = function(row) {
   return this.criteria.matches(row);
@@ -49,7 +49,7 @@ proto.matches = function(row) {
 /**
  * The text color
  * 
- * @returns {String}
+ * @return {String}
  */
 proto.color = function() {
   return this.data.color;
@@ -58,7 +58,7 @@ proto.color = function() {
 /**
  * The background color
  * 
- * @returns {String}
+ * @return {String}
  */
 proto.backgroundColor = function() {
   return this.data.bgColor;
