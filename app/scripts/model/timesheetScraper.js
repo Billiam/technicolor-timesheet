@@ -4,10 +4,10 @@ var domReady = require('app/lib/domready');
 var TimesheetEntry = require('app/model/timesheetEntry');
 
 /**
- * Class which fetches and maps timesheet entry dom nodes to {{crossLink "TimesheetEntry"}}{{/crossLink}} instances
+ * Class which fetches and maps timesheet entry dom nodes to {{#crossLink "TimesheetEntry"}}{{/crossLink}} instances
  * 
  * @class TimesheetScraper
- * @param dom
+ * @param {Document} dom
  * @constructor
  */
 var TimesheetScraper = function(dom) {
@@ -26,8 +26,10 @@ var ROW_SELECTOR = '.entry_row';
 var proto = TimesheetScraper.prototype;
 
 /**
- * Fetch 
- * @returns {Promise} Promise which resolves to an array of {{crossLink "TimesheetEntry"}}{{/crossLink}} instances
+ * Fetch {{#crossLink "TimesheetEntry"}}{{/crossLink}} entries from the DOM
+ * 
+ * @method entries
+ * @return {Promise} Promise which resolves to an array of {{#crossLink "TimesheetEntry"}}{{/crossLink}} instances
  */
 proto.entries = function() {
   return domReady.then(function() {

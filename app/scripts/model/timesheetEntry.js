@@ -8,7 +8,7 @@ var memoize = require('app/lib/memoize');
  * Model representing a single entry in the timesheet
  * 
  * @class TimesheetEntry
- * @param row
+ * @param {HTMLElement} row
  * @constructor
  */
 var TimesheetEntry = function(row) {
@@ -27,7 +27,7 @@ var proto = TimesheetEntry.prototype;
  * Fetch description text from the description cell
  * 
  * @method _description
- * @return String
+ * @return {String}
  * @private
  */
 proto._description = function() {
@@ -38,7 +38,7 @@ proto._description = function() {
  * Fetch the prefix in the description
  * 
  * @method _descriptionPrefix
- * @return String|null
+ * @return {String|null}
  * @private
  */
 proto._descriptionPrefix = function() {
@@ -55,7 +55,7 @@ proto._descriptionPrefix = function() {
  * Fetch the client name
  * 
  * @method _client
- * @return String
+ * @return {String}
  * @private
  */
 proto._client = function() {
@@ -66,7 +66,7 @@ proto._client = function() {
  * Fetch the workorder number
  * 
  * @method _workorder
- * @return String
+ * @return {String}
  * @private
  */
 proto._workorder = function() {
@@ -77,7 +77,7 @@ proto._workorder = function() {
  * Fetch the flagged state
  * 
  * @method _flagged
- * @return {boolean}
+ * @return {Boolean}
  * @private
  */
 proto._flagged = function() {
@@ -87,27 +87,27 @@ proto._flagged = function() {
 /**
  * Fetch and cache row description
  * @method description
- * @return String
+ * @return {String}
  */
 /**
  * Fetch and cache description prefix
  * @method descriptionPrefix
- * @return String|null
+ * @return {String|null}
  */
 /**
  * Fetch and cache client name
  * @method client
- * @return String
+ * @return {String}
  */
 /**
  * Fetch and cache workorder number
  * @method workorder
- * @return String
+ * @return {String}
  */
 /**
  * Fetch and cache flagged status
  * @method flagged
- * @return Boolean
+ * @return {Boolean}
  */
 ['description','descriptionPrefix','client','workorder','flagged'].forEach(function(method) {
   proto[method] = memoize(proto['_' + method]);

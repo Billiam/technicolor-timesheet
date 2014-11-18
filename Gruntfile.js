@@ -23,6 +23,7 @@ module.exports = function (grunt) {
   };
 
   grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
 
     // Project settings
     config: config,
@@ -308,7 +309,20 @@ module.exports = function (grunt) {
           dest: ''
         }]
       }
-    }
+    },
+    
+     yuidoc: {
+       compile: {
+         name: 'Technicolor Timesheet',
+         description: 'Script documentation',
+         url: '<%= pkg.homepage %>',
+         options: {
+           themedir: 'node_modules/alloy-apidocs-theme',
+           paths: '<%= config.app %>/scripts',
+           outdir: 'docs/yui'
+         }
+       }
+     }
   });
 
   grunt.registerTask('config:prod', function() {

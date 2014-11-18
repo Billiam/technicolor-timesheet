@@ -5,8 +5,8 @@ var Criteria = require('app/model/criteria');
 /**
  * A timesheet rule which contains styles and conditions
  * 
- * Applies style information to {{crossLink "TimesheetEntry"}}{{/crossLink}}, based
- * on {{crossLink "Criteria"}}{{/crossLink}} matching
+ * Applies style information to {{#crossLink "TimesheetEntry"}}{{/crossLink}}, based
+ * on {{#crossLink "Criteria"}}{{/crossLink}} matching
  * 
  * @class Rule
  * @param {Object} data Rule options
@@ -36,7 +36,7 @@ var Rule = function(data) {
 var proto = Rule.prototype;
 
 /**
- * Compare criteria to a {{crossLink "TimesheetEntry"}}{{/crossLink}} instance
+ * Compare criteria to a {{#crossLink "TimesheetEntry"}}{{/crossLink}} instance
  * 
  * @method matches
  * @param {TimesheetEntry} row The entry to test against 
