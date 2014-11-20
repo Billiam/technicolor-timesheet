@@ -1,7 +1,5 @@
 'use strict';
 
-var PlatformStyle = require('app/lib/platformStyle');
+var OptionsController = require('app/controller/options');
 
-PlatformStyle.setClass();
-
-
+new OptionsController().init();
