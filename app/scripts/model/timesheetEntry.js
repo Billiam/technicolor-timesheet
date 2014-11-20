@@ -2,8 +2,6 @@
 
 var PREFIX_REGEX = /^\s*(.+?)\s*:/i;
 
-var memoize = require('app/lib/memoize');
-
 /**
  * Model representing a single entry in the timesheet
  * 
@@ -19,9 +17,50 @@ var TimesheetEntry = function(row) {
    * @type {HTMLElement}
    */
   this.row = row;
+
+  /**
+   * Stores the row class so that it can be removed later
+   * 
+   * @property rowClass
+   * @type {null|string}
+   */
+  this.rowClass = null;
+
+  /**
+   * Cache for dom access methods
+   * 
+   * @property cache
+   * @type {{}}
+   */
+  this.cache = {};
 };
 
 var proto = TimesheetEntry.prototype;
+
+/**
+ * Replaces the class on the item row
+ * 
+ * @method setClass
+ * @param {String} className
+ */
+proto.setClass = function(className) {
+  this.removeClass();
+  
+  this.rowClass = className;
+  this.row.classList.add(className);
+};
+
+/**
+ * Remove the existing class from the row, if any
+ * 
+ * @method removeClass
+ */
+proto.removeClass = function() {
+  if (this.rowClass) {
+    this.row.classList.remove(this.rowClass);
+    this.rowClass = null;
+  }
+};
 
 /**
  * Fetch description text from the description cell
@@ -85,6 +124,36 @@ proto._flagged = function() {
 };
 
 /**
+ * Cache the output of a method
+ * 
+ * @method _cache
+ * @param {String} method
+ * @returns {*}
+ * @private
+ */
+proto._cache = function(method) {
+  if ( ! Object.prototype.hasOwnProperty(this.cache, method)) {
+    this.cache[method] = this[method]();
+  }
+  
+  return this.cache[method];
+};
+
+/**
+ * Create a cached version of a method
+ * 
+ * @method _cachedMethod
+ * @param {String} method
+ * @returns {Function}
+ * @private
+ */
+proto._cachedMethod = function(method) {
+  return function() {
+    return this._cache(method);
+  };
+};
+
+/**
  * Fetch and cache row description
  * @method description
  * @return {String}
@@ -110,7 +179,7 @@ proto._flagged = function() {
  * @return {Boolean}
  */
 ['description','descriptionPrefix','client','workorder','flagged'].forEach(function(method) {
-  proto[method] = memoize(proto['_' + method]);
+  proto[method] = proto._cachedMethod('_' + method);
 });
 
 module.exports = TimesheetEntry;

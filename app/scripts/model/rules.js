@@ -49,8 +49,8 @@ proto._getRulesData = function() {
       var request = {};
       request[RULES_KEY] = [];
       
-      this.store.get(request, function(rules) {
-        resolve(rules);
+      this.store.get(request, function(data) {
+        resolve(data[RULES_KEY]);
       });
     }.bind(this));
   }
@@ -78,7 +78,7 @@ proto._parseRules = function(rules) {
  * @return {Promise} A promise that will be fulfilled with {{#crossLink "Rule"}}{{/crossLink}} instances
  */
 proto.getRules = function() {
-  return this._getRulesData
+  return this._getRulesData()
     .then(this._parseRules.bind(this));
 };
 

@@ -12,7 +12,7 @@
  */
 var Criterion = function(data) {
   if ( ! this.isValid(data)) {
-    throw "Data could not be validated: " + JSON.stringify(data);
+    throw 'Data could not be validated: ' + JSON.stringify(data);
   }
   /**
    * Criterion data
@@ -28,7 +28,7 @@ var Criterion = function(data) {
    * @param {*} value The entry value to test
    * @return {Boolean} Whether the match is valid
    */
-  this.compare = _getComparison(data);
+  this.compare = this._getComparison(data);
 };
 
 var VALID_COLUMNS = [
@@ -48,7 +48,7 @@ var VALID_COLUMNS = [
  * @returns {Function}
  */
 var regexCompare = function(value) {
-  var regex = new RegExp(value, i);
+  var regex = new RegExp(value, 'i');
   
   return function(field) {
     return regex.test(field);
@@ -66,12 +66,15 @@ var regexCompare = function(value) {
 var simpleCompare = function(value) {
   return function(field) {
     return value === field;
-  }
+  };
 };
+
+var proto = Criterion.prototype;
+
 
 /**
  * Generate a method to use for criterion tests
- * s
+ * 
  * @method _getComparison
  * @param {Object} data Criterion data
  * @param {Boolean} data.regex Whether to test using regular expressions
@@ -79,11 +82,9 @@ var simpleCompare = function(value) {
  * @return {Function}
  * @private
  */
-var _getComparison = function(data) {
+proto._getComparison = function(data) {
   return data.regex ? regexCompare(data.value) : simpleCompare(data.value);
 };
-
-var proto = Criterion.prototype;
 
 /**
  * Check whether criterion data is valid
@@ -105,7 +106,7 @@ proto.isValid = function(data) {
  * @private
  */
 proto._getValue = function(row) {
-  return row[this.data.type]();
+  return row[this.data.column]();
 };
 
 /**

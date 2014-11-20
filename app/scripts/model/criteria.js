@@ -48,7 +48,7 @@ var proto = Criteria.prototype;
  * @return {Boolean} Whether entry can be said to match criteria
  */
 proto.matches = function(row) {
-  return this.criteria[this.matchMethod](function(criterion) {
+  return this.criteria[this._matchMethod](function(criterion) {
     return criterion.matches(row);
   }, this);
 };

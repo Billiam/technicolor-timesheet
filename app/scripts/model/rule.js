@@ -1,6 +1,7 @@
 'use strict';
 
 var Criteria = require('app/model/criteria');
+var uid = require('app/lib/uid');
 
 /**
  * A timesheet rule which contains styles and conditions
@@ -10,8 +11,8 @@ var Criteria = require('app/model/criteria');
  * 
  * @class Rule
  * @param {Object} data Rule options
- * @param {String|null} data.color Text color
- * @param {String|null} data.bgColor Background color
+ * @param {String|null} data.color Row color
+ * @param {String} data.ruleType Type of condition testing
  * @param {Array} data.conditions Array of individual conditions to test
  * @constructor
  */
@@ -20,7 +21,7 @@ var Rule = function(data) {
    * Raw rule data
    * 
    * @property data
-   * @type {{color: (String|null), bgColor: (String|null), conditions: Array}}
+   * @type {{color: (String|null), conditions: Array}}
    */
   this.data = data;
 
@@ -30,7 +31,15 @@ var Rule = function(data) {
    * @property criteria
    * @type {Criteria}
    */
-  this.criteria = new Criteria(this.data.conditions);
+  this.criteria = new Criteria(this.data.ruleType, this.data.conditions);
+
+  /**
+   * Unique identifier for this rule
+   * 
+   * @property id
+   * @type {Number}
+   */
+  this.id = uid();
 };
 
 var proto = Rule.prototype;
@@ -47,21 +56,12 @@ proto.matches = function(row) {
 };
 
 /**
- * The text color
+ * The row color
  * 
  * @return {String}
  */
 proto.color = function() {
   return this.data.color;
-};
-
-/**
- * The background color
- * 
- * @return {String}
- */
-proto.backgroundColor = function() {
-  return this.data.bgColor;
 };
 
 module.exports = Rule;
