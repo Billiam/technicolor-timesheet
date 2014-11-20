@@ -1,0 +1,32 @@
+.ruleset {
+    list-style-type: none;
+}
+.rule-enabled {
+    width: 200px;
+}
+.rule {
+    margin-bottom:5px;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+.rule .regex {
+    font-size: 9px;
+}
+.rule .value {
+    margin-right: 8px;
+}
+.rule.disabled {
+    color: #ccc;
+}
+.rule-result {
+    margin-bottom: 15px;
+}
+.sideBar .selected {
+    -webkit-border-start-color: rgb(78, 87, 100);
+    cursor: default;
+    pointer-events: none;
+}
+.sideBar .selected a {
+    color: rgb(70, 78, 90);
+}

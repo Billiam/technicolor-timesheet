@@ -1,3 +1,7 @@
 'use strict';
 
-console.log('\'Allo \'Allo! Option');
+var PlatformStyle = require('app/lib/platformStyle');
+
+PlatformStyle.setClass();
+
+
