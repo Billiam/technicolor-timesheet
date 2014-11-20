@@ -240,8 +240,8 @@ module.exports = function (grunt) {
           cwd: '<%= config.app %>',
           dest: '<%= config.dist %>',
           src: [
-            'manifest.json',
             'scripts/chromereload.js',
+            'scripts/reloadreceiver.js',
             'images/{,*/}*.png'
           ]
         }]
@@ -253,6 +253,7 @@ module.exports = function (grunt) {
           cwd: '<%= config.app %>',
           dest: '<%= config.dist %>',
           src: [
+            'manifest.json',
             '*.{ico,png,txt}',
             'images/{,*/}*.{webp,gif}',
             '{,*/}*.html',
@@ -276,23 +277,6 @@ module.exports = function (grunt) {
       ]
     },
 
-    // Auto buildnumber, exclude debug files. smart builds that event pages
-    chromeManifest: {
-      dist: {
-        options: {
-          buildnumber: false,
-          background: {
-            target: 'scripts/background.js',
-            exclude: [
-              'scripts/chromereload.js'
-            ]
-          }
-        },
-        src: '<%= config.app %>',
-        dest: '<%= config.dist %>'
-      }
-    },
-
     // Compres dist files to package
     compress: {
       dist: {
@@ -311,18 +295,18 @@ module.exports = function (grunt) {
       }
     },
     
-     yuidoc: {
-       compile: {
-         name: 'Technicolor Timesheet',
-         description: 'Script documentation',
-         url: '<%= pkg.homepage %>',
-         options: {
-           themedir: 'node_modules/alloy-apidocs-theme',
-           paths: '<%= config.app %>/scripts',
-           outdir: 'docs/yui'
-         }
-       }
-     }
+    yuidoc: {
+      compile: {
+        name: 'Technicolor Timesheet',
+        description: 'Script documentation',
+        url: '<%= pkg.homepage %>',
+        options: {
+          themedir: 'node_modules/alloy-apidocs-theme',
+          paths: '<%= config.app %>/scripts',
+          outdir: 'docs/yui'
+        }
+      }
+    }
   });
 
   grunt.registerTask('config:prod', function() {
@@ -334,6 +318,7 @@ module.exports = function (grunt) {
       'jshint',
       'clean:dist',
       'copy',
+      'manifest:debug',
       'browserify',
       'concurrent:chrome',
       'connect:chrome',
@@ -349,7 +334,6 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'config:prod',
-    'chromeManifest:dist',
     'useminPrepare',
     'concurrent:dist',
     // No UI feature selected, cssmin task will be commented
@@ -365,4 +349,21 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+  
+  grunt.registerTask('manifest:debug', function() {
+      var projectFile = grunt.config('config').app + '/manifest.json';
+      var outFile =  grunt.config('config').dist + '/manifest.json';
+    
+      if (!grunt.file.exists(projectFile)) {
+        grunt.log.error('file ' + projectFile + ' could not be found');
+        return false;
+      }
+      
+      var manifest = grunt.file.readJSON(projectFile);
+      manifest.background = {
+        scripts: ['scripts/chromereload.js']
+      };
+      manifest.content_scripts[0].js.push('scripts/reloadreceiver.js');
+      grunt.file.write(outFile, JSON.stringify(manifest, null, 2));
+    });
 };
