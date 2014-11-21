@@ -14,8 +14,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://mainframe.nerdery.com/timesheet.php*",
-        "http://timesheet.local.dev:8080/*"
+        "https://mainframe.nerdery.com/timesheet.php*"
       ],
       "js": [
         "scripts/contentscript.js"
