@@ -9,75 +9,26 @@
     <script type="text/javascript" src="scripts/options.js"></script>
 </head>
 <body>
-<nav class="sideBar">
-    <h1>Chrome</h1>
-    <ul>
-        <li><a href="chrome://history" target="_blank">History</a></li>
-        <li>
-            <a href="chrome://extensions">Extensions</a>
-        </li>
-        <li class="selected"><a href="">Technicolor</a></li>
-        <li><a href="chrome://settings">Settings</a></li>
-        <li><a href="chrome://help">Help</a></li>
-    </ul>
-</nav>
-<header>
-    <h1>Technicolor Timesheet</h1>
-</header>
-<section>
-    <h3>Color Settings</h3>
-</section>
-<ol>
-    <li class="ruleset">
-        <div class="rule-result">
-            Set the background color to <input type="color" value="#eeeeee"/>
-            when
-            <select name="type">
-                <option>any</option>
-                <option>all</option>
-            </select>
-            of the selected rules match:
-        </div>
-
-        <ul class="criteria">
-            <li class="rule">
-                <label class="rule-enabled">
-                    <input type="checkbox" name="client"/>
-                    Client is
-                </label>
-                <input type="text" class="value"/> <label class="regex"><input type="checkbox"/> regex?</label>
+    <nav class="sideBar">
+        <h1>Chrome</h1>
+        <ul>
+            <li><a href="chrome://history" target="_blank">History</a></li>
+            <li>
+                <a href="chrome://extensions">Extensions</a>
             </li>
-            <li class="rule">
-                <label class="rule-enabled">
-                    <input type="checkbox" name="workorder"/>
-                    Workorder is
-                </label>
-                <input type="text" class="value"/> <label class="regex"><input type="checkbox"/> regex?</label>
-            </li>
-            <li class="rule disabled">
-                <label class="rule-enabled">
-                    <input type="checkbox" name="description"/>
-                    Description is
-                </label>
-                <input type="text" class="value"/> <label class="regex"><input type="checkbox"/> regex?</label>
-            </li>
-            <li class="rule">
-                <label class="rule-enabled">
-                    <input type="checkbox" name="descriptionPrefix"/>
-                    Description Prefix is
-                </label>
-                <input type="text" class="value"/> <label class="regex"><input type="checkbox"/> regex?</label>
-            </li>
-            <li class="rule disabled">
-                <label class="rule-enabled">
-                    <input type="checkbox"/>
-                    Timesheet entry is flagged
-                </label>
-            </li>
+            <li class="selected"><a href="">Technicolor</a></li>
+            <li><a href="chrome://settings">Settings</a></li>
+            <li><a href="chrome://help">Help</a></li>
         </ul>
-
-        <button>Add a style</button>
-    </li>
-</ol>
+    </nav>
+    <header>
+        <h1>Technicolor Timesheet</h1>
+    </header>
+    
+    <section>
+        <h3>Color Settings</h3>
+        <div id="container">
+        </div>
+    </section>
 </body>
 </html>

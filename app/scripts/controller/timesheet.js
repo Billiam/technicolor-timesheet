@@ -1,9 +1,9 @@
 'use strict';
 
-var TimesheetScraper = require('app/model/timesheetScraper');
-var TimesheetStyler = require('app/model/timesheetStyler');
+var TimesheetScraper = require('app/lib/timesheetScraper');
+var TimesheetStyler = require('app/lib/timesheetStyler');
 var Rules = require('app/model/rules');
-var RuleStyles = require('app/model/ruleStyles');
+var RuleStyles = require('app/lib/ruleStyles');
 
 /**
  * Applies styles to timesheet entries

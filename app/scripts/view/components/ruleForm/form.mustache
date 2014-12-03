@@ -1,0 +1,23 @@
+<li class="ruleset">
+    <div class="remove-rule" on-click="remove-rule:{{id}}">
+    </div>
+
+    <div class="rule-result">
+        Set the background color to <input type="color" value="{{data.color}}"/>
+        when
+        
+        <select name="type" value="{{criteria.type}}">
+            <option>any</option>
+            <option>all</option>
+        </select>
+        of the selected rules match:
+    </div>
+
+    <ul class="criteria">
+        <criteria description="Client is" data="{{criteria.criteriaHash.client}}"/>
+        <criteria description="Workorder is" data="{{criteria.criteriaHash.workorder}}"/>
+        <criteria description="Description is" data="{{criteria.criteriaHash.description}}" />
+        <criteria description="Description prefix is" data="{{criteria.criteriaHash.descriptionPrefix}}" />
+        <criteria description="Timesheet entry is flagged" data="{{criteria.criteriaHash.flagged}}" hideValue="true" />
+    </ul>
+</li>

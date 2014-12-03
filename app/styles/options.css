@@ -30,3 +30,29 @@
 .sideBar .selected a {
     color: rgb(70, 78, 90);
 }
+
+.ruleset {
+    position: relative;
+    padding: 25px;
+}
+.remove-rule {
+    width: 30px;
+    height: 30px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAiElEQVR42r2RsQrDMAxEBRdl8SDcX8lQPGg1GBI6lvz/h7QyRRXV0qUULwfvwZ1tenw5PxToRPWMC52eA9+WDnlh3HFQ/xBQl86NFYJqeGflkiogrOvVlIFhqURFVho3x1moGAa3deMs+LS30CAhBN5nNxeT5hbJ1zwmji2k+aF6NENIPf/hs54f0sZFUVAMigAAAABJRU5ErkJggg==) no-repeat center center;
+}
+.remove-rule:hover {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAqUlEQVR4XqWRMQqEMBBF/1E8Ra6x6V3FRnS9QbCxtJg6Z7CzE9lTiIXXyUb3C8EULixDIMM8Zt4kcDfxM5A45U+cgeXnC1tREgkzAgob3hiq3CUHvGLG4FTQoSgxQGDrzN8WTLBGnx2IVDksen9GH7Z9hA5E6uxABMJyCHDMCEGHzugLQPPlBCBNGq+5YtpnGw1Bv+te15ypljTpVzdak5Opy+z+qf//zQ+Lg+07ay5KsgAAAABJRU5ErkJggg==) no-repeat center center;
+}
+
+.remove-rule {
+    display:none;
+    position:absolute;
+    top: 2px;
+    right: 2px;
+}
+.ruleset:hover {
+    background-color:#F3FCFF;
+}
+.ruleset:hover .remove-rule {
+    display: block;
+}

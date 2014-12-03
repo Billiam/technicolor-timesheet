@@ -17,6 +17,8 @@ var uid = require('app/lib/uid');
  * @constructor
  */
 var Rule = function(data) {
+  data = data || {};
+  
   /**
    * Raw rule data
    * 
@@ -64,4 +66,9 @@ proto.color = function() {
   return this.data.color;
 };
 
+//proto.criteriaString = function() {
+//  return this.criteria.map(function(criterion) {
+//    return criterion.toString();
+//  }).join(' - ');
+//};
 module.exports = Rule;

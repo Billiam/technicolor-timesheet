@@ -11,15 +11,38 @@
  * @constructor
  */
 var Criterion = function(data) {
-  if ( ! this.isValid(data)) {
-    throw 'Data could not be validated: ' + JSON.stringify(data);
-  }
+
   /**
-   * Criterion data
-   * @property data
-   * @type {{column: String, regex: Boolean, value: String}}
+   * Whether criterion is active
+   * 
+   * @property enabled
+   * @type {Boolean}
    */
-  this.data = data;
+  this.enabled = data.enabled;
+  
+  /**
+   * Criterion column to test
+   * 
+   * @property column
+   * @type {String}
+   */
+  this.column = data.column;
+
+  /**
+   * Value to compare to column
+   * 
+   * @property value
+   * @type {String}
+   */
+  this.value = data.value;
+
+  /**
+   * Whether comparison should be treated as a regular expression
+   * 
+   * @property regex
+   * @type {Boolean}
+   */
+  this.regex = data.regex;
 
   /**
    * Compare an entry value to the stored criterion value
@@ -28,10 +51,17 @@ var Criterion = function(data) {
    * @param {*} value The entry value to test
    * @return {Boolean} Whether the match is valid
    */
-  this.compare = this._getComparison(data);
+  this.compare = this._getComparison();
 };
 
-var VALID_COLUMNS = [
+/**
+ * List of criteria columns
+ * 
+ * @static
+ * @property VALID_COLUMNS
+ * @type {string[]}
+ */
+Criterion.VALID_COLUMNS = [
   'description',
   'descriptionPrefix',
   'workorder',
@@ -69,6 +99,18 @@ var simpleCompare = function(value) {
   };
 };
 
+/**
+ * Check whether criterion data is valid
+ * 
+ * @static
+ * @method isValid
+ * @param data Criterion data
+ * @return {boolean} Data validity 
+ */
+Criterion.isValid = function(data) {
+  return this.VALID_COLUMNS.indexOf(data.column) !== -1;
+};
+
 var proto = Criterion.prototype;
 
 
@@ -76,25 +118,23 @@ var proto = Criterion.prototype;
  * Generate a method to use for criterion tests
  * 
  * @method _getComparison
- * @param {Object} data Criterion data
- * @param {Boolean} data.regex Whether to test using regular expressions
- * @param {*} data.value The value to test against
  * @return {Function}
  * @private
  */
-proto._getComparison = function(data) {
-  return data.regex ? regexCompare(data.value) : simpleCompare(data.value);
+proto._getComparison = function() {
+  return this.regex ? regexCompare(this.value) : simpleCompare(this.value);
 };
 
-/**
- * Check whether criterion data is valid
- * 
- * @method isValid
- * @param data Criterion data
- * @return {boolean} Data validity 
- */
-proto.isValid = function(data) {
-  return VALID_COLUMNS.indexOf(data.column) !== -1;
+proto.isValid = function() {
+  return Criterion.isValid(this.toJson());
+};
+
+proto.toJson = function() {
+  return {
+    column: this.column,
+    value: this.value,
+    regex: this.regex
+  };
 };
 
 /**
@@ -106,7 +146,7 @@ proto.isValid = function(data) {
  * @private
  */
 proto._getValue = function(row) {
-  return row[this.data.column]();
+  return row[this.column]();
 };
 
 /**

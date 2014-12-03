@@ -1,0 +1,16 @@
+<li class="rule {{^data.enabled}}disabled{{/}}">
+    <label class="rule-enabled">
+        <input type="checkbox" name="client" checked="{{ data.enabled }}" />
+ 
+        {{ description }}
+    </label>
+
+    {{^hideValue}}
+        <input {{^data.enabled}}disabled{{/}} type="text" class="value" checked="{{data.value}}"/>
+
+        <label class="regex">
+            <input {{^data.enabled}}disabled{{/}} type="checkbox" value="{{data.regex}}"/> 
+            ( regex? )
+        </label>
+    {{/hideValue}}
+</li>

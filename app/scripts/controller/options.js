@@ -1,6 +1,9 @@
 'use strict';
 
 var PlatformStyle = require('app/lib/platformStyle');
+var Rules = require('app/model/rules');
+
+var OptionForm = require('app/service/optionForm');
 
 /**
  * Options page controller
@@ -9,6 +12,9 @@ var PlatformStyle = require('app/lib/platformStyle');
  * @constructor
  */
 var OptionsController = function() {
+  this.viewData = {
+    rules: null
+  };
 };
 
 var proto = OptionsController.prototype;
@@ -19,7 +25,20 @@ var proto = OptionsController.prototype;
  * @method init
  */
 proto.init = function() {
-  PlatformStyle.setClass();
+  PlatformStyle.init();
+
+  this.initRules()
+    .then(this.initView.bind(this));
+};
+
+proto.initRules = function() {
+  return Rules.getRules();
+};
+
+proto.initView = function(rules) {
+  this.viewData.rules = rules;
+  this.form = new OptionForm('#container', this.viewData);
+  this.form.init();
 };
 
 module.exports = OptionsController;

@@ -1,6 +1,6 @@
 'use strict';
 
-var domready = require('app/lib/domready');
+var domready = require('app/service/domready');
 
 /**
  * Add platform-specific classes to body element for styling
@@ -33,11 +33,11 @@ proto._getClass = function() {
 };
 
 /**
- * Set the body class
+ * Initialize platform-specific styles, set body class
  * 
- * @method setClass
+ * @method init
  */
-proto.setClass = function() {
+proto.init = function() {
   domready.then(function() {
     document.body.classList.add(this._getClass());
   }.bind(this));

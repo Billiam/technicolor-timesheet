@@ -30,15 +30,19 @@ module.exports = function (grunt) {
 
     browserify: {
       options: {
+        browserifyOptions: {
+          extensions:['.mustache']
+        },
+        transform: [['ractivate', {extensions: ['.mustache']}]],
         preBundleCB: function (b) {
-          
           b.plugin('remapify', [
             {
-              src: '**/*.js',
+              src: '**/*.*',
               cwd: grunt.config('config').approot,
               expose: 'app'
             }
           ]);
+          
           b.plugin('minifyify', {
             minify: grunt.config('config').uglify || false
           });
@@ -57,7 +61,10 @@ module.exports = function (grunt) {
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       js: {
-        files: ['<%= config.app %>/scripts/{,*/}*.js'],
+        files: [
+          '<%= config.app %>/scripts/**/*.js',
+          '<%= config.app %>/scripts/**/*.mustache'
+        ],
         tasks: ['jshint', 'browserify'],
         options: {
           livereload: true
@@ -68,10 +75,7 @@ module.exports = function (grunt) {
       },
       styles: {
         files: ['<%= config.app %>/styles/{,*/}*.css'],
-        tasks: [],
-        options: {
-          livereload: true
-        }
+        tasks: ['copy']
       },
       livereload: {
         options: {
@@ -81,6 +85,7 @@ module.exports = function (grunt) {
           '<%= config.dist %>/{,*/}*.html',
           '<%= config.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= config.dist %>/manifest.json',
+          
           '<%= config.dist %>/_locales/{,*/}*.json'
         ]
       }
