@@ -1,6 +1,6 @@
 'use strict';
 
-var Ractive = require('ractive');
+var Vue = require('app/view/vue');
 var domready = require('app/service/domready');
 
 var OptionForm = function(target, data) {
@@ -12,14 +12,9 @@ var OptionForm = function(target, data) {
 var proto = OptionForm.prototype;
 
 proto._createForm = function() {
-  return new Ractive({
+  return new Vue({
     el: this.target,
-    data: this.formData,
-    magic:true,
-    template: require('app/view/options/rule_list.mustache'),
-    components: {
-      'rule-form': require('app/view/components/ruleForm/ruleForm')
-    }
+    data: this.formData
   });
 };
 
