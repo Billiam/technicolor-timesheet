@@ -30,14 +30,10 @@ module.exports = function (grunt) {
 
     browserify: {
       options: {
-        browserifyOptions: {
-          extensions:['.mustache']
-        },
-        transform: [['ractivate', {extensions: ['.mustache']}]],
         preBundleCB: function (b) {
           b.plugin('remapify', [
             {
-              src: '**/*.*',
+              src: '**/*.js',
               cwd: grunt.config('config').approot,
               expose: 'app'
             }
@@ -63,7 +59,6 @@ module.exports = function (grunt) {
       js: {
         files: [
           '<%= config.app %>/scripts/**/*.js',
-          '<%= config.app %>/scripts/**/*.mustache'
         ],
         tasks: ['jshint', 'browserify'],
         options: {
@@ -72,6 +67,25 @@ module.exports = function (grunt) {
       },
       gruntfile: {
         files: ['Gruntfile.js']
+      },
+      copy: {
+        options: {
+          cwd: '<%= config.app %>'
+        },
+        files: [
+          'manifest.json',
+          '*.{ico,png,txt}',
+          'images/{,*/}*.{webp,gif}',
+          '{,*/}*.html',
+          'styles/{,*/}*.css',
+          'styles/fonts/{,*/}*.*',
+          '_locales/{,*/}*.json'
+        ],
+        tasks: ['copy']
+      },
+      html: {
+        files: ['<%= config.app %>/{,*/}*.html'],
+        tasks: ['copy']
       },
       styles: {
         files: ['<%= config.app %>/styles/{,*/}*.css'],
@@ -85,7 +99,6 @@ module.exports = function (grunt) {
           '<%= config.dist %>/{,*/}*.html',
           '<%= config.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= config.dist %>/manifest.json',
-          
           '<%= config.dist %>/_locales/{,*/}*.json'
         ]
       }

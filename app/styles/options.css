@@ -1,3 +1,7 @@
+@import url("options/options.css");
+@import url("options/widgets.css");
+@import url("options/layout.css");
+
 .ruleset {
     list-style-type: none;
 }
@@ -55,4 +59,11 @@
 }
 .ruleset:hover .remove-rule {
     display: block;
+}
+.cloak {
+    transition: opacity 0.3s;
+}
+[v-cloak] { 
+    opacity: 0; 
+    visibility: hidden
 }
