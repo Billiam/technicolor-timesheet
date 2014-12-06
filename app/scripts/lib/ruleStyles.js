@@ -1,6 +1,6 @@
 'use strict';
 
-var jss = require('jss');
+var jss = require('app/lib/jss');
 var ruleClass = require('app/lib/ruleClass');
 var tinycolor = require('tinycolor2');
 
@@ -29,16 +29,23 @@ var proto = RuleStyles.prototype;
 proto._applyRule = function(rule) {
   var styles = {};
   
-  var colorObj = tinycolor(rule.color());
-  var textColor = tinycolor.mostReadable(colorObj, TEXT_COLORS).toHexString();
+  var bgColor = tinycolor(rule.color());
+  var highlightColor = tinycolor(rule.color()).brighten(20);
   
-  styles['.timesheet .data_table tr.' + ruleClass(rule) + ' td'] = {
-    'background-color': rule.color(),
-    'border-left': '1px solid ' + colorObj.lighten(15).toHexString(),
-    'color': textColor
-  };
-  styles['.timesheet .data_table tr.' + ruleClass(rule) + ' td a'] = {
-    'color': textColor
+  var textColor = tinycolor.mostReadable(bgColor, TEXT_COLORS).toHexString();
+  
+  styles['.timesheet .data_table tr.' + ruleClass(rule)] = {
+    '&:hover td': {
+      'background-color': highlightColor.toHexString()
+    },
+    '& td': {
+      'background-color': rule.color(),
+      'border-left': '1px solid ' + bgColor.lighten(15).toHexString(),
+      'color': textColor,
+      '& a': {
+        'color': textColor
+      }
+    }
   };
   
   this.stylesheet.addRules(styles);
@@ -55,7 +62,7 @@ proto.render = function() {
     this.stylesheet = null;
   }
   
-  this.stylesheet = jss.createStylesheet().attach();
+  this.stylesheet = jss.createStyleSheet().attach();
   
   this._rules.forEach(this._applyRule, this);
 };

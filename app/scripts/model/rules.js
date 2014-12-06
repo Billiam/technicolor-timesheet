@@ -3,83 +3,109 @@
 
 var Rule = require('app/model/rule');
 
+var tinycolor = require('tinycolor2');
+var store = chrome.storage.sync;
+var RULES_KEY = 'rules';
+
 /**
  * A collection of rules to apply to the timesheet
  * 
- * Fetches rule data from storage and maps to {#crossLink "Rule"}}{{/crossLink}} instances
  * 
  * @class Rules
+ * @param {Rule[]} rules Array of Rule instances
  * @constructor
  */
-var Rules = function() {
-
-  /**
-   * Rules storage engine
-   * 
-   * @property store
-   * @type {chrome.storage}
-   * @default chrome.storage.sync
-   */
-  this.store = chrome.storage.sync;
-
-  /**
-   * Rules promise
-   * 
-   * @property _rulesData
-   * @type {Promise|null}
-   * @private
-   */
-  this._rulesData = null;
+var Rules = function(rules) {
+  this.data = rules;
 };
-
-var RULES_KEY = 'rules';
-
-var proto = Rules.prototype;
 
 /**
  * Fetch the raw collection data from storage and return as a promise
- * 
- * @method _getRulesData
- * @return {Promise} 
- * @private
  */
-proto._getRulesData = function() {
-  if ( ! this._rulesData) {
-    this._rulesData = new Promise(function(resolve) {
-      var request = {};
-      request[RULES_KEY] = [];
-      
-      this.store.get(request, function(data) {
-        resolve(data[RULES_KEY]);
-      });
-    }.bind(this));
-  }
-  return this._rulesData;
+Rules._getRulesData = function() {
+  return new Promise(function(resolve) {
+    var request = {};
+    request[RULES_KEY] = [];
+    
+    store.get(request, function(data) {
+      resolve(data[RULES_KEY]);
+    });
+  });
 };
 
 /**
  * Convert an array of rules data to {{#crossLink "Rule"}}{{/crossLink}} instances
  * 
  * @method _parseRules
- * @param rules {Array} rule data 
- * @return {Rule[]} Mapped rule instances
+ * @param {Object[]} rules Array of raw rules data
  * @private
  */
-proto._parseRules = function(rules) {
+Rules._parseRules = function(rules) {
   return rules.map(function(rule) {
     return new Rule(rule);
   });
 };
 
 /**
+ * Wrap an array of rules in a Rules collection instance
+ * 
+ * @method _createCollection
+ * @param {Rule[]} data 
+ * @return {Rules}
+ * @private
+ */
+Rules._createCollection = function(data) {
+  return new Rules(data);
+};
+
+/**
  * Fetch an array of available {{#crossLink "Rule"}}{{/crossLink}} instances
  * 
+ * @static
  * @method getRules
- * @return {Promise} A promise that will be fulfilled with {{#crossLink "Rule"}}{{/crossLink}} instances
+ * @return {Promise} A promise that will be fulfilled with a Rules collection
  */
-proto.getRules = function() {
+Rules.getRules = function() {
   return this._getRulesData()
-    .then(this._parseRules.bind(this));
+    .then(this._parseRules)
+    .then(this._createCollection);
+};
+
+var proto = Rules.prototype;
+
+/**
+ * Create a new rule
+ * 
+ * @method addRule
+ */
+proto.addRule = function() {
+  this.data.push(new Rule(this._defaultData()));
+};
+
+/**
+ * Generate default data for new Rules
+ * 
+ * @method _defaultData
+ * @return {Object}
+ * @private
+ */
+proto._defaultData = function() {
+  return {
+    color: tinycolor('#CEFFCC').spin(Math.floor(Math.random() * 720 - 360))
+  };
+};
+
+/**
+ * Remove a single rule from the collection
+ * 
+ * @method removeRule
+ * @param {Rule} rule
+ */
+proto.removeRule = function(rule) {
+  var index = this.data.indexOf(rule);
+  if (index !== -1) {
+    this.data.splice(index, 1);
+  }
 };
 
 module.exports = Rules;

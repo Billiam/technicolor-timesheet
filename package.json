@@ -21,14 +21,17 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-contrib-yuidoc": "^0.5.2",
     "grunt-mocha": "~0.4.10",
+    "grunt-template": "^0.2.3",
     "grunt-usemin": "~2.1.0",
     "jshint-stylish": "~0.1.5",
-    "jss": "^0.2.10",
+    "jss": "^0.8.1",
+    "jss-nested": "^0.1.4",
     "load-grunt-tasks": "~0.4.0",
     "minifyify": "^4.4.0",
     "remapify": "^1.3.0",
     "time-grunt": "~0.3.1",
-    "tinycolor2": "^1.0.0"
+    "tinycolor2": "^1.0.0",
+    "vue": "git://github.com/yyx990803/vue.git#a1b8b24e86e453703d4684db9f8159224aa42fed"
   },
   "engines": {
     "node": ">=0.8.0"

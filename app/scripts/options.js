@@ -1,3 +1,5 @@
 'use strict';
 
-console.log('\'Allo \'Allo! Option');
+var OptionsController = require('app/controller/options');
+
+new OptionsController().init();

@@ -1,6 +1,6 @@
 'use strict';
 
-var domReady = require('app/lib/domready');
+var domReady = require('app/service/domready');
 var TimesheetEntry = require('app/model/timesheetEntry');
 
 /**

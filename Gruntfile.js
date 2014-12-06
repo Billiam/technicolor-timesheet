@@ -31,7 +31,6 @@ module.exports = function (grunt) {
     browserify: {
       options: {
         preBundleCB: function (b) {
-          
           b.plugin('remapify', [
             {
               src: '**/*.js',
@@ -39,12 +38,10 @@ module.exports = function (grunt) {
               expose: 'app'
             }
           ]);
-          console.log('uglify: ', grunt.option('uglify'));
-          b.plugin('minifyify',
-            {
-              minify: grunt.option('uglify') || false
-            }
-          );
+          
+          b.plugin('minifyify', {
+            minify: grunt.config('config').uglify || false
+          });
         }
       },
       opts: {
@@ -59,12 +56,10 @@ module.exports = function (grunt) {
     },
     // Watches files for changes and runs tasks based on the changed files
     watch: {
-      bower: {
-        files: ['bower.json'],
-        tasks: ['bowerInstall']
-      },
       js: {
-        files: ['<%= config.app %>/scripts/{,*/}*.js'],
+        files: [
+          '<%= config.app %>/scripts/**/*.js',
+        ],
         tasks: ['jshint', 'browserify'],
         options: {
           livereload: true
@@ -73,22 +68,38 @@ module.exports = function (grunt) {
       gruntfile: {
         files: ['Gruntfile.js']
       },
+      copy: {
+        options: {
+          cwd: '<%= config.app %>'
+        },
+        files: [
+          'manifest.json',
+          '*.{ico,png,txt}',
+          'images/{,*/}*.{webp,gif}',
+          '{,*/}*.html',
+          'styles/{,*/}*.css',
+          'styles/fonts/{,*/}*.*',
+          '_locales/{,*/}*.json'
+        ],
+        tasks: ['copy']
+      },
+      html: {
+        files: ['<%= config.app %>/{,*/}*.html'],
+        tasks: ['copy']
+      },
       styles: {
         files: ['<%= config.app %>/styles/{,*/}*.css'],
-        tasks: [],
-        options: {
-          livereload: true
-        }
+        tasks: ['copy']
       },
       livereload: {
         options: {
           livereload: '<%= connect.options.livereload %>'
         },
         files: [
-          '<%= config.app %>/*.html',
-          '<%= config.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= config.app %>/manifest.json',
-          '<%= config.app %>/_locales/{,*/}*.json'
+          '<%= config.dist %>/{,*/}*.html',
+          '<%= config.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= config.dist %>/manifest.json',
+          '<%= config.dist %>/_locales/{,*/}*.json'
         ]
       }
     },
@@ -155,36 +166,6 @@ module.exports = function (grunt) {
           urls: ['http://localhost:<%= connect.options.port %>/index.html']
         }
       }
-    },
-
-    // Automatically inject Bower components into the HTML file
-    bowerInstall: {
-      app: {
-        src: [
-          '<%= config.app %>/*.html'
-        ]
-      }
-    },
-
-    // Reads HTML for usemin blocks to enable smart builds that automatically
-    // concat, minify and revision files. Creates configurations in memory so
-    // additional tasks can operate on them
-    useminPrepare: {
-      options: {
-        dest: '<%= config.dist %>'
-      },
-      html: [
-        '<%= config.app %>/options.html'
-      ]
-    },
-
-    // Performs rewrites based on rev and the useminPrepare configuration
-    usemin: {
-      options: {
-        assetsDirs: ['<%= config.dist %>', '<%= config.dist %>/images']
-      },
-      html: ['<%= config.dist %>/{,*/}*.html'],
-      css: ['<%= config.dist %>/styles/{,*/}*.css']
     },
 
     // The following *-min tasks produce minifies files in the dist folder
@@ -310,13 +291,23 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('config:prod', function() {
-    grunt.option('uglify', true);
+    grunt.config.merge({config: {uglify: true}});
   });
+  
+  grunt.registerTask('config:debug', function() {
+    grunt.config.merge({config: {livereload: true}});
+  });
+  
+  grunt.registerTask('test', [
+    'connect:test',
+    'mocha'
+  ]);
   
   grunt.registerTask('debug', function () {
     grunt.task.run([
       'jshint',
       'clean:dist',
+      'config:debug',
       'copy',
       'manifest:debug',
       'browserify',
@@ -326,15 +317,9 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('test', [
-    'connect:test',
-    'mocha'
-  ]);
-
   grunt.registerTask('build', [
     'clean:dist',
     'config:prod',
-    'useminPrepare',
     'concurrent:dist',
     // No UI feature selected, cssmin task will be commented
     // 'cssmin',
@@ -363,7 +348,10 @@ module.exports = function (grunt) {
       manifest.background = {
         scripts: ['scripts/chromereload.js']
       };
+    
+      manifest.content_scripts[0].matches.push('http://timesheet.local.dev:8080/*');
       manifest.content_scripts[0].js.push('scripts/reloadreceiver.js');
+    
       grunt.file.write(outFile, JSON.stringify(manifest, null, 2));
     });
 };

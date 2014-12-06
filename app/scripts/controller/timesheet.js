@@ -1,9 +1,9 @@
 'use strict';
 
-var TimesheetScraper = require('app/model/timesheetScraper');
-var TimesheetStyler = require('app/model/timesheetStyler');
+var TimesheetScraper = require('app/lib/timesheetScraper');
+var TimesheetStyler = require('app/lib/timesheetStyler');
 var Rules = require('app/model/rules');
-var RuleStyles = require('app/model/ruleStyles');
+var RuleStyles = require('app/lib/ruleStyles');
 
 /**
  * Applies styles to timesheet entries
@@ -25,8 +25,8 @@ var proto = TimesheetController.prototype;
  * @private
  */
 proto._initStyles = function(entries, rules) {
-  new RuleStyles(rules).render();
-  new TimesheetStyler(entries, rules).apply();
+  new RuleStyles(rules.data).render();
+  new TimesheetStyler(entries, rules.data).apply();
 };
 
 /**
@@ -36,10 +36,9 @@ proto._initStyles = function(entries, rules) {
  */
 proto.init = function() {
   var scraper = new TimesheetScraper(document);
-  var rulesRepo = new Rules();
 
   /* global Promise */
-  Promise.all([scraper.entries(), rulesRepo.getRules()]).then(function(results) {
+  Promise.all([scraper.entries(), Rules.getRules()]).then(function(results) {
     this._initStyles(results[0], results[1]);
   }.bind(this));
 };

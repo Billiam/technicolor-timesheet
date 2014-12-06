@@ -17,6 +17,8 @@ var uid = require('app/lib/uid');
  * @constructor
  */
 var Rule = function(data) {
+  data = data || {};
+  
   /**
    * Raw rule data
    * 

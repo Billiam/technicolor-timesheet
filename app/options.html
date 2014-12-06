@@ -1,24 +1,73 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <!-- build:css styles/vendor.css -->
-        <!-- bower:css -->
-        <!-- endbower -->
-        <!-- endbuild -->
-        <!-- build:css styles/main.css -->
-        <link href="styles/main.css" rel="stylesheet">
-        <!-- endbuild -->
-    </head>
-    <body>
-        <h1>'Allo, 'Allo!</h1>
-                
-        <!-- build:js scripts/vendor.js -->
-        <!-- bower:js -->
-        <!-- endbower -->
-        <!-- endbuild -->
+<head>
+  <title>Options - Technicolor Timesheet</title>
+  <link rel="stylesheet" type="text/css" href="styles/options.css"/>
+  <script type="text/javascript" src="scripts/options.js"></script>
+</head>
+<body>
+  <div id="container" class="cloak" v-cloak>
 
-        <!-- build:js scripts/options.js -->
-        <script src="scripts/options.js"></script>
-        <!-- endbuild -->
-    </body>
+  <nav class="sideBar">
+    <h1>{{ "chrome_label" | i18n }}</h1>
+    <ul>
+      <li><a v-chrome-link="history">{{* "chrome_history" | i18n}}</a></li>
+      <li>
+        <a v-chrome-link="extensions">{{* "chrome_extensions" | i18n }}</a>
+      </li>
+      <li class="selected">
+        <a href="">{{* "appShortName" | i18n }}</a>
+      </li>
+      <li><a v-chrome-link="settings">{{* "chrome_settings" | i18n }}</a></li>
+      <li><a v-chrome-link="help">{{* "chrome_help" | i18n }}</a></li>
+    </ul>
+  </nav>
+    <header>
+      <h1>{{* "appName" | i18n}}</h1>
+    </header>
+    
+    <section>
+      <h3>{{* "settings_label" | i18n }}</h3>
+      <ol>
+        <li class="ruleset" v-repeat="rules.data" v-transition="slide">
+          <div class="rule-container">
+            <div v-on="click: removeRule($data)" class="remove-rule"></div>
+    
+            <div class="rule-result">
+              Set the background color to <input type="color" v-model="data.color"/>
+              when
+              
+              <select name="type" v-model="criteria.type">
+                <option>any</option>
+                <option>all</option>
+              </select>
+              
+              of the selected rules match:
+            </div>
+            
+            <ul class="criteria" v-repeat="criteria.criteria">
+              <li class="rule" v-class="disabled : !enabled">
+                <label class="rule-enabled">
+                  <input type="checkbox" name="client" v-model="enabled" />
+                  {{* "criteria_label_" + column | i18n}}
+                </label>
+                
+                <div v-if="$data.fieldType() == 'string'">
+                  <input v-attr="disabled:!enabled" type="text" class="value" v-model="value"/>
+              
+                  <label class="regex">
+                    <input v-attr="disabled:!enabled" type="checkbox" v-model="regex" /> 
+                    ( {{"regex_label" | i18n}} )
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+      
+      <button v-on="click: addRule">{{ "add_rule_label" | i18n }}</button>
+    </section>
+  </div>
+</body>
 </html>

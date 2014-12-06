@@ -3,8 +3,57 @@
     "message": "Technicolor Timesheet",
     "description": "The name of the application"
   },
+  "appShortName": {
+    "message": "Technicolor"
+  },
   "appDescription": {
     "message": "Colorize timesheet rows based on rulesets",
     "description": "The description of the application"
+  },
+  "criteria_label_client": {
+    "message": "Client is"
+  },
+  "criteria_label_workorder": {
+    "message": "Workorder is"
+  },
+  "criteria_label_description": {
+    "message": "Description is"
+  },
+  "criteria_label_descriptionPrefix": {
+    "message": "Description prefix is"
+  },
+  "criteria_label_flagged": {
+    "message": "Timesheet entry is flagged"
+  },
+  "criteria_label_flaggedTo": {
+    "message": "Timesheet entry is flagged to"
+  },
+  "criteria_label_flagMessage": {
+    "message": "Timesheet flag message is"
+  },
+  "regex_label": {
+    "message": "regex?"
+  },
+  "settings_label": {
+    "message": "Color Settings"
+  },
+  "add_rule_label": {
+    "message": "Add New Rule"
+  },
+  "chrome_help": {
+    "message": "Help"
+  },
+  "chrome_settings": {
+    "message": "Settings"
+  },
+  "chrome_extensions": {
+    "message": "Extensions"
+  },
+  "chrome_history": {
+    "message": "History"
+  },
+  "chrome_label": {
+    "message": "Chrome"
   }
+  
 }
