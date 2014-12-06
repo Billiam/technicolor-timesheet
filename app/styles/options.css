@@ -36,6 +36,11 @@
 }
 
 .ruleset {
+    transition: max-height 0.3s cubic-bezier(0.470, 0.000, 0.745, 0.715);
+    overflow: hidden;
+    max-height: 300px;
+}
+.rule-container {
     position: relative;
     padding: 25px;
 }
@@ -66,4 +71,8 @@
 [v-cloak] { 
     opacity: 0; 
     visibility: hidden
+}
+
+.ruleset.slide-enter, .ruleset.slide-leave {
+    max-height: 0;
 }
