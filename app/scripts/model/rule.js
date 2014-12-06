@@ -66,9 +66,4 @@ proto.color = function() {
   return this.data.color;
 };
 
-//proto.criteriaString = function() {
-//  return this.criteria.map(function(criterion) {
-//    return criterion.toString();
-//  }).join(' - ');
-//};
 module.exports = Rule;

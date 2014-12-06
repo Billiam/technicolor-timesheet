@@ -3,6 +3,7 @@
 
 var Rule = require('app/model/rule');
 
+var tinycolor = require('tinycolor2');
 var store = chrome.storage.sync;
 var RULES_KEY = 'rules';
 
@@ -32,11 +33,12 @@ Rules._getRulesData = function() {
   });
 };
 
-Rules._setRulesData = function() {
-};
-
 /**
  * Convert an array of rules data to {{#crossLink "Rule"}}{{/crossLink}} instances
+ * 
+ * @method _parseRules
+ * @param {Object[]} rules Array of raw rules data
+ * @private
  */
 Rules._parseRules = function(rules) {
   return rules.map(function(rule) {
@@ -44,6 +46,14 @@ Rules._parseRules = function(rules) {
   });
 };
 
+/**
+ * Wrap an array of rules in a Rules collection instance
+ * 
+ * @method _createCollection
+ * @param {Rule[]} data 
+ * @return {Rules}
+ * @private
+ */
 Rules._createCollection = function(data) {
   return new Rules(data);
 };
@@ -51,6 +61,7 @@ Rules._createCollection = function(data) {
 /**
  * Fetch an array of available {{#crossLink "Rule"}}{{/crossLink}} instances
  * 
+ * @static
  * @method getRules
  * @return {Promise} A promise that will be fulfilled with a Rules collection
  */
@@ -62,18 +73,34 @@ Rules.getRules = function() {
 
 var proto = Rules.prototype;
 
+/**
+ * Create a new rule
+ * 
+ * @method addRule
+ */
 proto.addRule = function() {
-  this.data.push(new Rule());
+  this.data.push(new Rule(this._defaultData()));
 };
 
-proto.removeById = function(id) {
-  for (var i=this.data.length - 1; i >= 0; i--) {
-    if(this.data[i].id === id) {
-      this.data.splice(i, 1);
-    }
-  }
+/**
+ * Generate default data for new Rules
+ * 
+ * @method _defaultData
+ * @return {Object}
+ * @private
+ */
+proto._defaultData = function() {
+  return {
+    color: tinycolor('#CEFFCC').spin(Math.floor(Math.random() * 720 - 360))
+  };
 };
 
+/**
+ * Remove a single rule from the collection
+ * 
+ * @method removeRule
+ * @param {Rule} rule
+ */
 proto.removeRule = function(rule) {
   var index = this.data.indexOf(rule);
   if (index !== -1) {

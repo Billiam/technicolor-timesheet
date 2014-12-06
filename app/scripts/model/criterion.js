@@ -1,5 +1,7 @@
 'use strict';
 
+var Types = require('app/config/criteriaTypes');
+
 /**
  * A single test for entry objects
  * 
@@ -11,14 +13,13 @@
  * @constructor
  */
 var Criterion = function(data) {
-
   /**
    * Whether criterion is active
    * 
    * @property enabled
    * @type {Boolean}
    */
-  this.enabled = data.enabled;
+  this.enabled = data.enabled !== false;
   
   /**
    * Criterion column to test
@@ -53,21 +54,6 @@ var Criterion = function(data) {
    */
   this.compare = this._getComparison();
 };
-
-/**
- * List of criteria columns
- * 
- * @static
- * @property VALID_COLUMNS
- * @type {string[]}
- */
-Criterion.VALID_COLUMNS = [
-  'description',
-  'descriptionPrefix',
-  'workorder',
-  'client',
-  'flagged'
-];
 
 /**
  * Returns a comparator which tests a value using a regular expression
@@ -108,7 +94,7 @@ var simpleCompare = function(value) {
  * @return {boolean} Data validity 
  */
 Criterion.isValid = function(data) {
-  return this.VALID_COLUMNS.indexOf(data.column) !== -1;
+  return Object.hasOwnProperty(data.column);
 };
 
 var proto = Criterion.prototype;
@@ -125,8 +111,43 @@ proto._getComparison = function() {
   return this.regex ? regexCompare(this.value) : simpleCompare(this.value);
 };
 
+/**
+ * Whether criterion is valid
+ * 
+ * @method isValid
+ * @return {boolean}
+ */
 proto.isValid = function() {
   return Criterion.isValid(this.toJson());
+};
+
+/**
+ * Criterion position, relative to other criteria
+ * 
+ * @method position
+ * @return {Number}
+ */
+proto.position = function() {
+  if (this._position == null) {
+    this._position = Types.keys.indexOf(this.column);
+  }
+  return this._position;
+};
+
+/**
+ * The type of data stored
+ * 
+ * Examples: string, boolean
+ * 
+ * @method fieldType
+ * @returns {String}
+ */
+proto.fieldType = function() {
+  if ( ! this._fieldType) {
+    this._fieldType = Types.fields[this.column];
+  }
+  
+  return this._fieldType;
 };
 
 proto.toJson = function() {

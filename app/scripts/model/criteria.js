@@ -1,6 +1,7 @@
 'use strict';
 
 var Criterion = require('app/model/criterion');
+var Types = require('app/config/criteriaTypes');
 
 /**
  * A collection of criterion instances, allowing tests for 'all match' and 'any match'
@@ -50,6 +51,7 @@ var Criteria = function(type, criteria) {
   this.generateCriteria();
 };
 
+
 var proto = Criteria.prototype;
 
 /**
@@ -82,11 +84,33 @@ proto.addCriteria = function(data) {
  */
 proto.addCriterion = function(data) {
   this.removeCriterion(data.column);
- 
-  var criterion = new Criterion(data);
-  this.criteria.push(criterion);
   
+  var criterion = new Criterion(data);
+  
+  //insert criterion in sorted position
+  this.insertSorted(criterion);
+
   this.criteriaHash[data.column] = criterion;
+};
+
+/**
+ * Insert criterion into list in ordered position
+ * 
+ * @param Criterion criterion
+ */
+proto.insertSorted = function(criterion) {
+  var insertIndex = criterion.position();
+  
+  var inserted = this.criteria.some(function(oldCriteria, i) {
+    if (oldCriteria.position() > insertIndex) {
+      this.criteria.splice(i, 0, criterion);
+      return true;
+    }
+  }, this);
+
+  if ( ! inserted) {
+    this.criteria.push(criterion);
+  }
 };
 
 /**
@@ -126,9 +150,12 @@ proto.matches = function(row) {
  * @method generateCriteria
  */
 proto.generateCriteria = function() {
-  Criterion.VALID_COLUMNS.forEach(function(column) {
-    if ( ! this.criteriaHash[column]) {
-      this.addCriterion({column: column});
+  Types.keys.forEach(function(column) {
+    if (this.criteriaHash[column] == null) {
+      this.addCriterion({
+        column: column,
+        enabled: false
+      });
     }
   }, this);
 };
