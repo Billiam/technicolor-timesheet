@@ -26,46 +26,9 @@
       <h1>{{* "appName" | i18n}}</h1>
     </header>
     
-    <section>
+    <section >
       <h3>{{* "settings_label" | i18n }}</h3>
-      <ol>
-        <li class="ruleset" v-repeat="rules.data" v-transition="slide">
-          <div class="rule-container">
-            <div v-on="click: removeRule($data)" class="remove-rule"></div>
-    
-            <div class="rule-result">
-              Set the background color to <input type="color" v-model="data.color"/>
-              when
-              
-              <select name="type" v-model="criteria.type">
-                <option>any</option>
-                <option>all</option>
-              </select>
-              
-              of the selected rules match:
-            </div>
-            
-            <ul class="criteria" v-repeat="criteria.criteria">
-              <li class="rule" v-class="disabled : !enabled">
-                <label class="rule-enabled">
-                  <input type="checkbox" name="client" v-model="enabled" />
-                  {{* "criteria_label_" + column | i18n}}
-                </label>
-                
-                <div v-if="$data.fieldType() == 'string'">
-                  <input v-attr="disabled:!enabled" type="text" class="value" v-model="value"/>
-              
-                  <label class="regex">
-                    <input v-attr="disabled:!enabled" type="checkbox" v-model="regex" /> 
-                    ( {{"regex_label" | i18n}} )
-                  </label>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </li>
-      </ol>
-      
+      <div v-component="rule-list" rules="{{rules}}"></div>
       <button v-on="click: addRule">{{ "add_rule_label" | i18n }}</button>
     </section>
   </div>

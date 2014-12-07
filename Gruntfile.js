@@ -30,10 +30,14 @@ module.exports = function (grunt) {
 
     browserify: {
       options: {
+        browserifyOptions: {
+          extensions:['.html']
+        },
+        transform: [['partialify']],
         preBundleCB: function (b) {
           b.plugin('remapify', [
             {
-              src: '**/*.js',
+              src: '**/*.*',
               cwd: grunt.config('config').approot,
               expose: 'app'
             }
@@ -58,7 +62,7 @@ module.exports = function (grunt) {
     watch: {
       js: {
         files: [
-          '<%= config.app %>/scripts/**/*.js',
+          '<%= config.app %>/scripts/**/*.{js,html}'
         ],
         tasks: ['jshint', 'browserify'],
         options: {
@@ -76,7 +80,7 @@ module.exports = function (grunt) {
           'manifest.json',
           '*.{ico,png,txt}',
           'images/{,*/}*.{webp,gif}',
-          '{,*/}*.html',
+          '*.html',
           'styles/{,*/}*.css',
           'styles/fonts/{,*/}*.*',
           '_locales/{,*/}*.json'
@@ -237,7 +241,7 @@ module.exports = function (grunt) {
             'manifest.json',
             '*.{ico,png,txt}',
             'images/{,*/}*.{webp,gif}',
-            '{,*/}*.html',
+            '*.html',
             'styles/{,*/}*.css',
             'styles/fonts/{,*/}*.*',
             '_locales/{,*/}*.json'

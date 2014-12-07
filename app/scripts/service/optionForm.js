@@ -27,12 +27,15 @@ var proto = OptionForm.prototype;
  * @private
  */
 proto._createForm = function() {
+  var self = this;
   return new Vue({
     el: this.target,
     data: this.formData,
     methods: {
-      addRule: this._addRule.bind(this),
-      removeRule: this._removeRule.bind(this)
+      addRule: this._addRule.bind(this)
+    },
+    created: function() {
+      this.$on('remove-rule', self._removeRule.bind(self));
     }
   });
 };
