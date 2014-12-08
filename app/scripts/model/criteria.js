@@ -58,7 +58,7 @@ var proto = Criteria.prototype;
  * Fetch all active criteria
  * 
  * @method activeCriteria
- * @returns {Criterion[]}
+ * @return {Criterion[]}
  */
 proto.activeCriteria = function() {
   return this.criteria.filter(function(criterion) {
@@ -96,7 +96,7 @@ proto.addCriterion = function(data) {
 /**
  * Insert criterion into list in ordered position
  * 
- * @param Criterion criterion
+ * @param {Criterion} criterion
  */
 proto.insertSorted = function(criterion) {
   var insertIndex = criterion.position();
@@ -161,19 +161,35 @@ proto.generateCriteria = function() {
 };
 
 /**
+ * Whether criteria set is valid
+ * 
+ * Some criteria should be set, and all criteria should be valid
+ * 
+ * @return {boolean}
+ */
+proto.isValid = function() {
+  var criterionValid = true;
+  
+  this.criteria.forEach(function(criterion) {
+    if ( ! criterion.isValid()) {
+      criterionValid = false;
+    }
+  }, this);
+  
+  return criterionValid && this.activeCriteria().length > 0;
+};
+
+/**
  * Fetch criteria data for persistance
  * 
  * @method criteriaData
- * @returns {Criterion[]}
+ * @return {Criterion[]}
  */
-//proto.criteriaData = function() {
-//  return this.activeCriteria()
-//    .filter(function(criterion) {
-//      return criterion.isValid();
-//    }, this)
-//    .map(function(criterion) {
-//      return criterion.toJson();
-//    });
-//};
+proto.criteriaData = function() {
+  return this.activeCriteria()
+    .map(function(criterion) {
+      return criterion.toJson();
+    });
+};
 
 module.exports = Criteria;

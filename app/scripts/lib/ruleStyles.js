@@ -22,6 +22,19 @@ var proto = RuleStyles.prototype;
 /**
  * Apply a single rule to the current stylesheet
  * 
+ *     //creates styles as follows
+ *     .timesheet .data_table tr.technicolor-1:hover td {
+ *         background-color: #337333;
+ *     }
+ *     .timesheet .data_table tr.technicolor-1 td {
+ *         background-color: #004000;
+ *         border-left: 1px solid #008c00;
+ *         color: #eeeeee;
+ *     }
+ *     .timesheet .data_table tr.technicolor-1 td a {
+ *         color: #eeeeee;
+ *     }
+ * 
  * @method _applyRule
  * @param {Rule} rule
  * @private
@@ -41,10 +54,10 @@ proto._applyRule = function(rule) {
     '& td': {
       'background-color': rule.color(),
       'border-left': '1px solid ' + bgColor.lighten(15).toHexString(),
-      'color': textColor,
-      '& a': {
-        'color': textColor
-      }
+      'color': textColor
+    },
+    '& td a': {
+      'color': textColor
     }
   };
   

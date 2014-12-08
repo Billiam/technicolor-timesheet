@@ -41,7 +41,6 @@
 .ruleset.slide-leave {
     max-height: 0;
 }
-
 .rule-enabled {
     width: 200px;
 }
@@ -60,6 +59,14 @@
 .rule.disabled {
     color: #ccc;
 }
+.rule.error {
+    color: red;
+}
+.error input {
+    color: #940000;
+    border-color: #E36F6F;
+    background-color: #FFD0D0;
+}
 .rule-result {
     margin-bottom: 15px;
 }
@@ -70,6 +77,7 @@
     padding: 25px;
 }
 .remove-rule {
+    cursor:pointer;
     display:none;
     position:absolute;
     top: 2px;

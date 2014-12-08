@@ -13,7 +13,7 @@ Vue.directive('chrome-link', {
    * Fetch the chrome url the bound element 
    * 
    * @method _url
-   * @returns {Boolean|String} URL, or false if required data is missing
+   * @return {Boolean|String} URL, or false if required data is missing
    * @private
    */
   _url: function() {

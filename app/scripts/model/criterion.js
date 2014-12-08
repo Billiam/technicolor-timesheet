@@ -35,7 +35,7 @@ var Criterion = function(data) {
    * @property value
    * @type {String}
    */
-  this.value = data.value;
+  this.value = data.value || '';
 
   /**
    * Whether comparison should be treated as a regular expression
@@ -43,8 +43,16 @@ var Criterion = function(data) {
    * @property regex
    * @type {Boolean}
    */
-  this.regex = data.regex;
+  this.regex = data.regex || false;
 
+  /**
+   * Current validation status
+   * 
+   * @property valid
+   * @type {boolean}
+   */
+  this.valid = true;
+  
   /**
    * Compare an entry value to the stored criterion value
    * 
@@ -61,7 +69,7 @@ var Criterion = function(data) {
  * @method regexCompare
  * @private
  * @param {*} value The criterion to use during the test
- * @returns {Function}
+ * @return {Function}
  */
 var regexCompare = function(value) {
   var regex = new RegExp(value, 'i');
@@ -94,7 +102,22 @@ var simpleCompare = function(value) {
  * @return {boolean} Data validity 
  */
 Criterion.isValid = function(data) {
-  return Object.hasOwnProperty(data.column);
+  if (data.column == null) {
+    return false;
+  }
+  
+  if ( ! data.value || data.value.trim() === '') {
+    return false;
+  }
+  
+  if ( data.regex) {
+    try {
+      new RegExp(data.value);
+    } catch(e) {
+      return false;
+    }
+  }
+  return true;
 };
 
 var proto = Criterion.prototype;
@@ -118,7 +141,9 @@ proto._getComparison = function() {
  * @return {boolean}
  */
 proto.isValid = function() {
-  return Criterion.isValid(this.toJson());
+  this.valid = !this.enabled || Criterion.isValid(this.toJson());
+  
+  return this.valid;
 };
 
 /**
@@ -140,7 +165,7 @@ proto.position = function() {
  * Examples: string, boolean
  * 
  * @method fieldType
- * @returns {String}
+ * @return {String}
  */
 proto.fieldType = function() {
   if ( ! this._fieldType) {
@@ -150,6 +175,12 @@ proto.fieldType = function() {
   return this._fieldType;
 };
 
+/**
+ * Convert criterion data to simple json object
+ * 
+ * @method toJson
+ * @return {}
+ */
 proto.toJson = function() {
   return {
     column: this.column,

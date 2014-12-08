@@ -74,12 +74,76 @@ Rules.getRules = function() {
 var proto = Rules.prototype;
 
 /**
+ * Persist current rule data
+ * 
+ * @method save
+ * @return {Promise}
+ */
+proto.save = function() {
+  return new Promise(function(resolve, reject) {
+    if ( ! this.isValid()) {
+      reject();
+    }
+    
+    var request = {};
+    var data = this._getData();
+    console.log(data);
+    request[RULES_KEY] = this._getData();
+    
+    store.set(request, function() {
+      resolve();
+    });
+  }.bind(this));
+};
+
+/**
+ * Fetch raw rules data for persistance
+ * 
+ * @method _getData
+ * @return {Array}
+ * @private
+ */
+proto._getData = function() {
+  return this.data.map(function(rule) {
+    return rule.toJson();
+  });
+};
+
+/**
+ * Whether rules data is valid
+ * 
+ * @method isValid
+ * @return {boolean}
+ */
+proto.isValid = function() {
+  var valid = true;
+  this.data.forEach(function(rule) {
+    if ( ! rule.isValid()) {
+      valid = false;
+    }
+  });
+  return valid;
+};
+
+/**
  * Create a new rule
  * 
  * @method addRule
  */
 proto.addRule = function() {
   this.data.push(new Rule(this._defaultData()));
+};
+
+/**
+ * Move a rule to a new position
+ * 
+ * @param {Number} oldPosition
+ * @param {Number} newPosition
+ */
+proto.moveRule = function(oldPosition, newPosition) {
+  if(this.data[oldPosition] != null && this.data[newPosition] != null) {
+    this.data.splice(newPosition, 0, this.data.splice(oldPosition, 1)[0]);
+  }
 };
 
 /**
@@ -91,7 +155,7 @@ proto.addRule = function() {
  */
 proto._defaultData = function() {
   return {
-    color: tinycolor('#CEFFCC').spin(Math.floor(Math.random() * 720 - 360))
+    color: tinycolor('#CEFFCC').spin(Math.floor(Math.random() * 720 - 360)).toHexString()
   };
 };
 

@@ -43,7 +43,7 @@ proto.init = function() {
  * Return a promise which resolves to a rule collection
  * 
  * @method initRules
- * @returns {Promise}
+ * @return {Promise}
  */
 proto.initRules = function() {
   return Rules.getRules();

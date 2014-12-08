@@ -23,7 +23,7 @@ var Rule = function(data) {
    * Raw rule data
    * 
    * @property data
-   * @type {{color: (String|null), conditions: Array}}
+   * @type {Object}
    */
   this.data = data;
 
@@ -42,9 +42,30 @@ var Rule = function(data) {
    * @type {Number}
    */
   this.id = uid();
+
+  /**
+   * Current validation status
+   * 
+   * @property valid
+   * @type {boolean}
+   */
+  this.valid = true;
 };
 
 var proto = Rule.prototype;
+
+/**
+ * Convert rule data to simple object
+ * 
+ * @return {Object}
+ */
+proto.toJson = function() {
+  return {
+    color: this.data.color,
+    ruleType: this.criteria.type,
+    conditions: this.criteria.criteriaData()
+  };
+};
 
 /**
  * Compare criteria to a {{#crossLink "TimesheetEntry"}}{{/crossLink}} instance
@@ -55,6 +76,18 @@ var proto = Rule.prototype;
  */
 proto.matches = function(row) {
   return this.criteria.matches(row);
+};
+
+/**
+ * Whether individual rule is valid
+ * 
+ * @method isValid
+ * @return {boolean}
+ */
+proto.isValid = function() {
+  this.valid = this.criteria.isValid() && /^#[a-f0-9]{6}$/i.test(this.color());
+  
+  return this.valid;
 };
 
 /**

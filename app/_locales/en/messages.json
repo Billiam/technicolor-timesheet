@@ -40,6 +40,9 @@
   "add_rule_label": {
     "message": "Add New Rule"
   },
+  "save_rules_label": {
+    "message": "Save"
+  },
   "chrome_help": {
     "message": "Help"
   },

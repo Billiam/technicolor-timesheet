@@ -1,5 +1,5 @@
 <ol class="rules">
-  <li class="ruleset" v-repeat="rules.data" v-transition="slide">
+  <li class="ruleset" v-repeat="rules.data" v-attr="data-id: $index" v-transition="slide">
     <div class="rule-container">
       <div v-on="click: removeRule($data)" class="remove-rule"></div>
 
@@ -16,7 +16,7 @@
       </div>
       
       <ul class="criteria" v-repeat="criteria.criteria">
-        <li class="rule" v-class="disabled : !enabled">
+        <li class="rule" v-class="disabled : !enabled, error: !valid">
           <label class="rule-enabled">
             <input type="checkbox" name="client" v-model="enabled" />
             {{* "criteria_label_" + column | i18n}}

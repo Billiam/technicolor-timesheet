@@ -23,7 +23,7 @@ var proto = OptionForm.prototype;
  * Create the form view
  * 
  * @method _createForm
- * @returns {Vue}
+ * @return {Vue}
  * @private
  */
 proto._createForm = function() {
@@ -32,9 +32,11 @@ proto._createForm = function() {
     el: this.target,
     data: this.formData,
     methods: {
-      addRule: this._addRule.bind(this)
+      addRule: this._addRule.bind(this),
+      saveRules: this._saveRules.bind(this)
     },
     created: function() {
+      this.$on('sort-rules', self._reorder.bind(self));
       this.$on('remove-rule', self._removeRule.bind(self));
     }
   });
@@ -59,6 +61,32 @@ proto.init = function() {
  */
 proto._addRule = function() {
   this.formData.rules.addRule();
+};
+
+/**
+ * Move a rule to a new position
+ * 
+ * @method _reorder
+ * @param {Number} oldIndex
+ * @param {Number} newIndex
+ * @private
+ */
+proto._reorder = function(oldIndex, newIndex) {
+  this.formData.rules.moveRule(oldIndex, newIndex);
+};
+
+/**
+ * Persist rules
+ * 
+ * @method _saveRules
+ * @private
+ */
+proto._saveRules = function() {
+  this.formData.rules.save().then(function() {
+    console.log('save successful');
+  }, function() {
+    console.log('error in save');
+  });
 };
 
 /**

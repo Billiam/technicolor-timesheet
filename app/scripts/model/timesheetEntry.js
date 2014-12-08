@@ -128,7 +128,7 @@ proto._flagged = function() {
  * 
  * @method _cache
  * @param {String} method
- * @returns {*}
+ * @return {*}
  * @private
  */
 proto._cache = function(method) {
@@ -144,7 +144,7 @@ proto._cache = function(method) {
  * 
  * @method _cachedMethod
  * @param {String} method
- * @returns {Function}
+ * @return {Function}
  * @private
  */
 proto._cachedMethod = function(method) {
