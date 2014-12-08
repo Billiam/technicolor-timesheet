@@ -83,6 +83,7 @@ proto.save = function() {
   return new Promise(function(resolve, reject) {
     if ( ! this.isValid()) {
       reject();
+      return;
     }
     
     var request = {};
