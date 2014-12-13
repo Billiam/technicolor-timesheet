@@ -87,8 +87,7 @@ proto.save = function() {
     }
     
     var request = {};
-    var data = this._getData();
-    console.log(data);
+    
     request[RULES_KEY] = this._getData();
     
     store.set(request, function() {

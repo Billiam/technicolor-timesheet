@@ -42,26 +42,39 @@ var proto = RuleStyles.prototype;
 proto._applyRule = function(rule) {
   var styles = {};
   
-  var bgColor = tinycolor(rule.color());
-  var highlightColor = tinycolor(rule.color()).brighten(20);
-  
-  var textColor = tinycolor.mostReadable(bgColor, TEXT_COLORS).toHexString();
+  var colors = this._getColors(rule.color());
   
   styles['.timesheet .data_table tr.' + ruleClass(rule)] = {
     '&:hover td': {
-      'background-color': highlightColor.toHexString()
+      'background-color': colors.highlight
     },
     '& td': {
-      'background-color': rule.color(),
-      'border-left': '1px solid ' + bgColor.lighten(15).toHexString(),
-      'color': textColor
+      'background-color': colors.background,
+      'border-left': '1px solid ' + colors.border,
+      'color': colors.text
     },
     '& td a': {
-      'color': textColor
+      'color': colors.text
     }
   };
   
   this.stylesheet.addRules(styles);
+};
+
+/**
+ * Fetch a set of style colors from a base color
+ * 
+ * @param {String} color Base color
+ * @return {Object}
+ * @private
+ */
+proto._getColors = function(color) {
+  return {
+    background: color,
+    highlight: tinycolor(color).brighten(20).toHexString(),
+    border: tinycolor(color).lighten(15).toHexString(),
+    text: tinycolor.mostReadable(color, TEXT_COLORS).toHexString()
+  };
 };
 
 /**
