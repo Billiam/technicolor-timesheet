@@ -26,20 +26,30 @@ var ROW_SELECTOR = '.entry_row';
 var proto = TimesheetScraper.prototype;
 
 /**
- * Fetch {{#crossLink "TimesheetEntry"}}{{/crossLink}} entries from the DOM
+ * Fetch timesheet nodes from the dom
+ * 
+ * @method _findRows
+ * @return {Promise} Promise which resolves with an array of dom nodes
+ * @private
+ */
+proto._findRows = function() {
+  return domReady.then(function() {
+    var rows = this.document.getElementById(TIMESHEET_ID).querySelectorAll(ROW_SELECTOR);
+    
+    return Array.prototype.slice.call(rows);
+  }.bind(this));
+};
+/**
+ * Map dom nodes to {{#crossLink "TimesheetEntry"}}{{/crossLink}} instances
  * 
  * @method entries
  * @return {Promise} Promise which resolves to an array of {{#crossLink "TimesheetEntry"}}{{/crossLink}} instances
  */
 proto.entries = function() {
-  return domReady.then(function() {
-    var nodes = this.document.getElementById(TIMESHEET_ID).querySelectorAll(ROW_SELECTOR);
-    var rows = [];
-    for (var i = 0, l=nodes.length; i < l; i++) {
-      rows.push(new TimesheetEntry(nodes[i]));
-    }
-    
-    return rows;
+  return this._findRows.then(function(rows) {
+    return rows.map(function(row) {
+      return new TimesheetEntry(row);
+    });
   }.bind(this));
 };
 

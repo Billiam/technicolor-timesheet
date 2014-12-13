@@ -3,11 +3,26 @@
 var Types = {};
 
 Types.fields = {
-  description: 'string',
-  descriptionPrefix: 'string',
-  workorder: 'string',
-  client: 'string',
-  flagged: 'boolean'
+  description: {
+    type: 'string',
+    value: ''
+  },
+  descriptionPrefix: {
+    type: 'string',
+    value: ''
+  },
+  workorder: {
+    type: 'string',
+    value: ''
+  },
+  client: {
+    type: 'string',
+    value: ''
+  },
+  flagged: {
+    type: 'boolean',
+    value: true
+  }
 };
 
 Types.keys = ['description', 'descriptionPrefix', 'workorder', 'client', 'flagged'];

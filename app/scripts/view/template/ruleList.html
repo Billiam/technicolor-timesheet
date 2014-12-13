@@ -22,7 +22,7 @@
             {{* "criteria_label_" + column | i18n}}
           </label>
           
-          <div v-if="$data.fieldType() == 'string'">
+          <div v-if="$data.hasValue()">
             <input v-attr="disabled:!enabled" type="text" class="value" v-model="value"/>
         
             <label class="regex">

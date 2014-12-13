@@ -22,7 +22,6 @@ var Criteria = function(type, criteria) {
    */
   this.type = type || 'any';
 
-  this._matchMethod = type === 'any' ? 'some': 'every';
   /**
    * Method called on array of criterion objects when testing for matches
    *
@@ -30,6 +29,7 @@ var Criteria = function(type, criteria) {
    * @property _matchMethod
    * @type String
    */
+  this._matchMethod = type === 'any' ? 'some': 'every';
 
   /**
    * Collection of criterion instances
@@ -150,14 +150,7 @@ proto.matches = function(row) {
  * @method generateCriteria
  */
 proto.generateCriteria = function() {
-  Types.keys.forEach(function(column) {
-    if (this.criteriaHash[column] == null) {
-      this.addCriterion({
-        column: column,
-        enabled: false
-      });
-    }
-  }, this);
+  this.addCriteria(this._missingCriteriaData());
 };
 
 /**
@@ -190,6 +183,34 @@ proto.criteriaData = function() {
     .map(function(criterion) {
       return criterion.toJson();
     });
+};
+
+/**
+ * Fetch columns which are not represented in save criteria
+ * 
+ * @return {String[]}
+ * @private
+ */
+proto._missingCriteria = function() {
+  return Types.keys.filter(function(column) {
+    return this.criteriaHash[column] == null;
+  }, this);
+};
+
+/**
+ * Convert missing criteria columns to criterion data
+ * 
+ * @returns {Object[]}
+ * @private
+ */
+proto._missingCriteriaData = function() {
+  return this._missingCriteria().map(function(column) {
+    return {
+      column: column,
+      enabled: false,
+      value: Types.fields[column].value
+    };
+  });
 };
 
 module.exports = Criteria;

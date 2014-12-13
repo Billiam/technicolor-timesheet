@@ -33,9 +33,9 @@ var Criterion = function(data) {
    * Value to compare to column
    * 
    * @property value
-   * @type {String}
+   * @type {*}
    */
-  this.value = data.value || '';
+  this.value = data.value == null ? '' : data.value;
 
   /**
    * Whether comparison should be treated as a regular expression
@@ -75,7 +75,7 @@ var regexCompare = function(value) {
   var regex = new RegExp(value, 'i');
   
   return function(field) {
-    return regex.test(field);
+    return field != null && regex.test(field);
   };
 };
 
@@ -102,11 +102,15 @@ var simpleCompare = function(value) {
  * @return {boolean} Data validity 
  */
 Criterion.isValid = function(data) {
-  if (data.column == null) {
+  if (data.column == null || Types.fields[data.column] == null) {
     return false;
   }
+  if (Types.fields[data.column].type === 'boolean') {
+    //no further validation required
+    return true;
+  }
   
-  if ( ! data.value || data.value.trim() === '') {
+  if (data.value == null || (typeof data === 'string' && data.value.trim() === '')) {
     return false;
   }
   
@@ -117,6 +121,7 @@ Criterion.isValid = function(data) {
       return false;
     }
   }
+  
   return true;
 };
 
@@ -168,11 +173,17 @@ proto.position = function() {
  * @return {String}
  */
 proto.fieldType = function() {
-  if ( ! this._fieldType) {
-    this._fieldType = Types.fields[this.column];
-  }
-  
-  return this._fieldType;
+  return Types.fields[this.column].type;
+};
+
+/**
+ * Whether criterion uses a value field
+ * 
+ * @method hasValue
+ * @return {boolean}
+ */
+proto.hasValue = function() {
+  return this.fieldType() === 'string';
 };
 
 /**
