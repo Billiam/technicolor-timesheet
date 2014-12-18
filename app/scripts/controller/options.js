@@ -3,7 +3,7 @@
 var PlatformStyle = require('app/lib/platformStyle');
 var Rules = require('app/model/rules');
 
-var OptionForm = require('app/service/optionForm');
+var OptionView = require('app/view/optionView');
 
 /**
  * Options page controller
@@ -57,7 +57,7 @@ proto.initRules = function() {
  */
 proto.initView = function(rules) {
   this.viewData.rules = rules;
-  this.form = new OptionForm('#container', this.viewData);
+  this.form = new OptionView('#container', this.viewData);
   this.form.init();
 };
 

@@ -4,7 +4,7 @@ var Vue = require('app/view/vue');
 var domready = require('app/service/domready');
 
 /**
- * A form object for the options page
+ * A view model for the options page
  * 
  * @class OptionForm
  * @param {String} target Selector to bind view object to

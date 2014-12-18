@@ -1,6 +1,7 @@
 'use strict';
 
 var Types = require('app/config/criteriaTypes');
+var Compare = require('app/model/criterion/comparison');
 
 /**
  * A single test for entry objects
@@ -60,37 +61,7 @@ var Criterion = function(data) {
    * @param {*} value The entry value to test
    * @return {Boolean} Whether the match is valid
    */
-  this.compare = this._getComparison();
-};
-
-/**
- * Returns a comparator which tests a value using a regular expression
- * 
- * @method regexCompare
- * @private
- * @param {*} value The criterion to use during the test
- * @return {Function}
- */
-var regexCompare = function(value) {
-  var regex = new RegExp(value, 'i');
-  
-  return function(field) {
-    return field != null && regex.test(field);
-  };
-};
-
-/**
- * Returns a comparator which tests a value using an equality check
- * 
- * @method simpleCompare
- * @private
- * @param {*} value The criterion to use during the test
- * @return {Function}
- */
-var simpleCompare = function(value) {
-  return function(field) {
-    return value === field;
-  };
+  this.compare = Compare.create(this.regex, this.value);
 };
 
 /**
@@ -126,18 +97,6 @@ Criterion.isValid = function(data) {
 };
 
 var proto = Criterion.prototype;
-
-
-/**
- * Generate a method to use for criterion tests
- * 
- * @method _getComparison
- * @return {Function}
- * @private
- */
-proto._getComparison = function() {
-  return this.regex ? regexCompare(this.value) : simpleCompare(this.value);
-};
 
 /**
  * Whether criterion is valid

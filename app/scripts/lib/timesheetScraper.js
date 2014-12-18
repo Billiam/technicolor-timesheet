@@ -46,7 +46,7 @@ proto._findRows = function() {
  * @return {Promise} Promise which resolves to an array of {{#crossLink "TimesheetEntry"}}{{/crossLink}} instances
  */
 proto.entries = function() {
-  return this._findRows.then(function(rows) {
+  return this._findRows().then(function(rows) {
     return rows.map(function(row) {
       return new TimesheetEntry(row);
     });
