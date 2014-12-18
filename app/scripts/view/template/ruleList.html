@@ -1,10 +1,13 @@
 <ol class="rules">
   <li class="ruleset" v-repeat="rules.data" v-attr="data-id: $index" v-transition="slide">
     <div class="rule-container">
-      <div v-on="click: removeRule($data)" class="remove-rule"></div>
+      <button title="Delete" v-on="click: removeRule($data)" class="custom-appearance remove-rule"></button>
 
       <div class="rule-result">
-        Set the background color to <input type="color" v-model="data.color"/>
+        Set the background color to 
+        
+        <input type="color" v-model="data.color"/>
+        
         when
         
         <select name="type" v-model="criteria.type">
@@ -27,7 +30,7 @@
         
             <label class="regex">
               <input v-attr="disabled:!enabled" type="checkbox" v-model="regex" /> 
-              ( {{"regex_label" | i18n}} )
+              {{"regex_label" | i18n}}
             </label>
           </div>
         </li>

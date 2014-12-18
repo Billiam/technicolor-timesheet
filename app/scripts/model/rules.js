@@ -97,7 +97,7 @@ proto.save = function() {
 };
 
 /**
- * Fetch raw rules data for persistance
+ * Fetch raw rules data for persistence
  * 
  * @method _getData
  * @return {Array}

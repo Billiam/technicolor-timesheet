@@ -32,7 +32,7 @@
     "message": "Timesheet flag message is"
   },
   "regex_label": {
-    "message": "regex?"
+    "message": "regular expression"
   },
   "settings_label": {
     "message": "Color Settings"
@@ -58,5 +58,4 @@
   "chrome_label": {
     "message": "Chrome"
   }
-  
 }

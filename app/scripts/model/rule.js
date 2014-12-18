@@ -2,7 +2,6 @@
 
 var Criteria = require('app/model/criteria');
 var uid = require('app/lib/uid');
-
 /**
  * A timesheet rule which contains styles and conditions
  * 
