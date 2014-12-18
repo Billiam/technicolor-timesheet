@@ -6,7 +6,7 @@ body {
     font-size: 12px;
     color: rgb(48, 57, 66);
 }
-button, select:not([size]), select[size="1"], input[type="checkbox"], input[type="radio"] {
+button:not(.custom-appearance), select:not([size]), select[size="1"], input[type="checkbox"], input[type="radio"] {
     -webkit-appearance: none;
     position: relative;
     
@@ -78,7 +78,8 @@ button, select:not([size]), select[size="1"], input[type="checkbox"], input[type
             background-color: #666;
             border-radius: 100%;
         }
-button:enabled:hover, select:not([size]):enabled:hover, select[size="1"]:enabled:hover, input[type="checkbox"]:enabled:hover, input[type="radio"]:enabled:hover {
+button:enabled::not(.custom-appearance):hover, select:not([size]):enabled:hover, select[size="1"]:enabled:hover, 
+input[type="checkbox"]:enabled:hover, input[type="radio"]:enabled:hover {
     background-image: -webkit-linear-gradient(#F0F0F0, #F0F0F0 38%, #E0E0E0);
     background-image:         linear-gradient(#F0F0F0, #F0F0F0 38%, #E0E0E0);
     border-color: rgba(0,0,0,0.3);
@@ -89,7 +90,7 @@ button:enabled:hover, select:not([size]):enabled:hover, select[size="1"]:enabled
         background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAICAYAAAAbQcSUAAAAaUlEQVQoz2P4//8/A7UwdkEGhiggTsODo4g2LBEImJmZvwE1/UfHIHGQPNGGAbHCggULFrKxsf1ENgjEB4mD5EnxJoaByAZB5Yk3DNlAPj6+L8gGkWUYzMC3b982IRtEtmFQjaxYxDAwAGi4TwMYKNLfAAAAAElFTkSuQmCC'), -webkit-linear-gradient(#F0F0F0, #F0F0F0 38%, #E0E0E0);
         background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAICAYAAAAbQcSUAAAAaUlEQVQoz2P4//8/A7UwdkEGhiggTsODo4g2LBEImJmZvwE1/UfHIHGQPNGGAbHCggULFrKxsf1ENgjEB4mD5EnxJoaByAZB5Yk3DNlAPj6+L8gGkWUYzMC3b982IRtEtmFQjaxYxDAwAGi4TwMYKNLfAAAAAElFTkSuQmCC'), linear-gradient(#F0F0F0, #F0F0F0 38%, #E0E0E0);
     }
-button:enabled:active, select:not([size]):enabled:active, select[size="1"]:enabled:active, input[type="checkbox"]:enabled:active {
+button:not(.custom-appearance):enabled:active, select:not([size]):enabled:active, select[size="1"]:enabled:active, input[type="checkbox"]:enabled:active {
     background-image: -webkit-linear-gradient(#E7E7E7, #E7E7E7 38%, #D7D7D7);
     background-image:         linear-gradient(#E7E7E7, #E7E7E7 38%, #D7D7D7);
     box-shadow: none;
@@ -99,7 +100,7 @@ button:enabled:active, select:not([size]):enabled:active, select[size="1"]:enabl
         background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAICAYAAAAbQcSUAAAAaUlEQVQoz2P4//8/A7UwdkEGhiggTsODo4g2LBEImJmZvwE1/UfHIHGQPNGGAbHCggULFrKxsf1ENgjEB4mD5EnxJoaByAZB5Yk3DNlAPj6+L8gGkWUYzMC3b982IRtEtmFQjaxYxDAwAGi4TwMYKNLfAAAAAElFTkSuQmCC'), -webkit-linear-gradient(#E7E7E7, #E7E7E7 38%, #D7D7D7);
         background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAICAYAAAAbQcSUAAAAaUlEQVQoz2P4//8/A7UwdkEGhiggTsODo4g2LBEImJmZvwE1/UfHIHGQPNGGAbHCggULFrKxsf1ENgjEB4mD5EnxJoaByAZB5Yk3DNlAPj6+L8gGkWUYzMC3b982IRtEtmFQjaxYxDAwAGi4TwMYKNLfAAAAAElFTkSuQmCC'), linear-gradient(#E7E7E7, #E7E7E7 38%, #D7D7D7);
     }
-button:enabled:focus, select:not([size]):enabled:focus, select[size="1"]:enabled:focus, input[type="checkbox"]:enabled:focus, input[type="radio"]:enabled:focus {
+button:not(.custom-appearance):enabled:focus, select:not([size]):enabled:focus, select[size="1"]:enabled:focus, input[type="checkbox"]:enabled:focus, input[type="radio"]:enabled:focus {
     -webkit-transition: border-color 200ms;
             transition: border-color 200ms;
     border-color: rgb(77,144,254);
