@@ -1,5 +1,8 @@
+'use strict';
+
 var Vue = require('vue');
 var template = require('app/view/template/ruleList');
+var RuleComponent = require('app/view/components/rule');
 var Sortable = require('sortablejs');
 
 /**
@@ -17,13 +20,17 @@ Vue.component('rule-list', {
   
   paramAttributes: ['rules'],
   
+  components: {
+    rule: RuleComponent
+  },
+  
   ready: function() {
     var self = this;
     
     this.sort = Sortable.create(this.$el, {
       animation: 150,
       draggable: '.ruleset',
-      filter: '.remove-rule',
+      filter: 'button,input,label',
       onStart: function() {
         Sortable.utils.toggleClass(self.$el, 'sorting', true);
       },

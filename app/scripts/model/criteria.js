@@ -161,15 +161,15 @@ proto.generateCriteria = function() {
  * @return {boolean}
  */
 proto.isValid = function() {
-  var criterionValid = true;
+  var criteriaValid = true;
   
   this.criteria.forEach(function(criterion) {
     if ( ! criterion.isValid()) {
-      criterionValid = false;
+      criteriaValid = false;
     }
   }, this);
-  
-  return criterionValid && this.activeCriteria().length > 0;
+
+  return criteriaValid;
 };
 
 /**

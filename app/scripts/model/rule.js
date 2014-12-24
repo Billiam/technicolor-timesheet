@@ -2,6 +2,7 @@
 
 var Criteria = require('app/model/criteria');
 var uid = require('app/lib/uid');
+var Errors = require('app/model/error');
 /**
  * A timesheet rule which contains styles and conditions
  * 
@@ -43,15 +44,24 @@ var Rule = function(data) {
   this.id = uid();
 
   /**
-   * Current validation status
-   * 
-   * @property valid
-   * @type {boolean}
+   * Errors collection
+   *
+   * @property errors
+   * @type {Error}
    */
-  this.valid = true;
+  this.errors = new Errors(['color']);
 };
 
 var proto = Rule.prototype;
+
+/**
+ * Whether rule has any errors after validation
+ *
+ * @return {boolean}
+ */
+proto.hasErrors = function() {
+  return this.errors.hasErrors();
+};
 
 /**
  * Convert rule data to simple object
@@ -84,9 +94,17 @@ proto.matches = function(row) {
  * @return {boolean}
  */
 proto.isValid = function() {
-  this.valid = this.criteria.isValid() && /^#[a-f0-9]{6}$/i.test(this.color());
+  this.errors.clear();
+
+  if (! /^#[a-f0-9]{6}$/i.test(this.color())) {
+    this.errors.add('color', 'rule_error_color_invalid');
+  }
   
-  return this.valid;
+  if (this.criteria.activeCriteria().length === 0) {
+    this.errors.add('base', 'criteria_error_criteria_required');
+  }
+  
+  return this.criteria.isValid() && this.errors.empty();
 };
 
 /**

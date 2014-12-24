@@ -1,7 +1,10 @@
 @import url("options/options.css");
 @import url("options/widgets.css");
 @import url("options/layout.css");
-
+ul, ol {
+    padding-left: 0;
+    list-style-type: none;
+}
 .cloak {
     transition: opacity 0.3s;
 }
@@ -33,18 +36,18 @@
     max-height: 300px;
     border: 1px dashed transparent;
 }
-.ruleset:hover {
-    background-color:#F3FCFF;
-}
 .sorting .ruleset:hover {
     background:none;
 }
-.ruleset:active {
-}
-.sortable-ghost {
-    background: none;
+
+.sorting .ruleset[draggable=true]
+{
+    background-color:#F3FCFF;
+    border-color:blue;
     opacity: 0.5;
-    border-color: blue;
+}
+.ruleset:hover {
+    background-color:#F3FCFF;
 }
 .ruleset:hover .remove-rule {
     display: block;
@@ -60,7 +63,9 @@
     width: 200px;
 }
 .rule {
-    margin-bottom:5px;
+    margin-bottom: 5px;
+}
+.rule .fields {
     display:flex;
     flex-direction: row;
     align-items: center;
@@ -105,4 +110,11 @@
 }
 .remove-rule:hover {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAqUlEQVR4XqWRMQqEMBBF/1E8Ra6x6V3FRnS9QbCxtJg6Z7CzE9lTiIXXyUb3C8EULixDIMM8Zt4kcDfxM5A45U+cgeXnC1tREgkzAgob3hiq3CUHvGLG4FTQoSgxQGDrzN8WTLBGnx2IVDksen9GH7Z9hA5E6uxABMJyCHDMCEGHzugLQPPlBCBNGq+5YtpnGw1Bv+te15ypljTpVzdak5Opy+z+qf//zQ+Lg+07ay5KsgAAAABJRU5ErkJggg==) no-repeat center center;
+}
+input[type="text"].error {
+    border-color:red;
+    background-color:#ffaaa1;
+}
+.criteria {
+    list-style-type: none;
 }

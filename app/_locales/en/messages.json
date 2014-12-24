@@ -57,5 +57,14 @@
   },
   "chrome_label": {
     "message": "Chrome"
+  },
+  "criteria_error_criteria_required": {
+    "message": "Please select at least one condition"
+  },
+  "criterion_error_value_regex_invalid": {
+    "message": "This regular expression is not valid"
+  },
+  "criterion_error_value_required": {
+    "message": "Value is required"
   }
 }

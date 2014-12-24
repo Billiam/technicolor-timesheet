@@ -2,6 +2,7 @@
 
 var Types = require('app/config/criteriaTypes');
 var Compare = require('app/model/criterion/comparison');
+var Errors = require('app/model/error');
 
 /**
  * A single test for entry objects
@@ -62,38 +63,14 @@ var Criterion = function(data) {
    * @return {Boolean} Whether the match is valid
    */
   this.compare = Compare.create(this.regex, this.value);
-};
 
-/**
- * Check whether criterion data is valid
- * 
- * @static
- * @method isValid
- * @param data Criterion data
- * @return {boolean} Data validity 
- */
-Criterion.isValid = function(data) {
-  if (data.column == null || Types.fields[data.column] == null) {
-    return false;
-  }
-  if (Types.fields[data.column].type === 'boolean') {
-    //no further validation required
-    return true;
-  }
-  
-  if (data.value == null || (typeof data === 'string' && data.value.trim() === '')) {
-    return false;
-  }
-  
-  if ( data.regex) {
-    try {
-      new RegExp(data.value);
-    } catch(e) {
-      return false;
-    }
-  }
-  
-  return true;
+  /**
+   * Errors object
+   *
+   * @property errors
+   * @type Error
+   */
+  this.errors = new Errors(['column', 'value']);
 };
 
 var proto = Criterion.prototype;
@@ -105,9 +82,38 @@ var proto = Criterion.prototype;
  * @return {boolean}
  */
 proto.isValid = function() {
-  this.valid = !this.enabled || Criterion.isValid(this.toJson());
-  
-  return this.valid;
+  this.errors.clear();
+
+  if ( ! this.enabled) {
+    return true;
+  }
+
+  if (this.column == null || Types.fields[this.column] == null) {
+    this.errors.add('column', 'criterion_error_column_invalid');
+
+    return false;
+  }
+  if (Types.fields[this.column].type === 'boolean') {
+    //no further validation required
+    return true;
+  }
+
+  if (this.value == null || (typeof this.value === 'string' && this.value.trim() === '')) {
+    this.errors.add('value', 'criterion_error_value_required');
+
+    return false;
+  }
+
+  if (this.regex) {
+    try {
+      new RegExp(this.value);
+    } catch(e) {
+      this.errors.add('value', 'criterion_error_value_regex_invalid');
+      return false;
+    }
+  }
+
+  return true;
 };
 
 /**
@@ -149,7 +155,7 @@ proto.hasValue = function() {
  * Convert criterion data to simple json object
  * 
  * @method toJson
- * @return {}
+ * @return {Object}
  */
 proto.toJson = function() {
   return {

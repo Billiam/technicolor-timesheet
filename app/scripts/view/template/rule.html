@@ -1,0 +1,56 @@
+<div class="rule-container">
+  <button title="Delete" v-on="click: removeRule($data)" class="custom-appearance remove-rule"></button>
+
+  <ul class="errors">
+    <li v-repeat="errors">
+      {{ $value | i18n }}
+    </li>
+  </ul>
+  
+  <div class="rule-result">
+    Set the background color to 
+    
+    <input type="color" v-model="data.color"/>
+    
+    when
+    
+    <select name="type" v-model="criteria.type">
+      <option>any</option>
+      <option>all</option>
+    </select>
+    
+    of the selected rules match:
+  </div>
+
+  <div class="errors">
+    {{ $data.criteria.errors | json }}
+    <div class="error-message" v-repeat="$data.criteria.errors.base">
+      {{$value | i18n}}
+    </div>
+  </div>
+
+  <ul class="criteria">
+    <li class="rule" v-class="disabled : !enabled"  v-repeat="criteria.criteria">
+      <div class="fields">
+        <label class="rule-enabled">
+          <input type="checkbox" name="client" v-model="enabled" />
+          {{* "criteria_label_" + column | i18n}}
+        </label>
+
+        <div v-if="$data.hasValue()">
+          <input v-attr="disabled:!enabled" v-class="error: $data.errors.hasError('value')" type="text" class="value" v-model="value"/>
+
+          <label class="regex">
+            <input v-attr="disabled:!enabled" type="checkbox" v-model="regex" />
+            {{"regex_label" | i18n}}
+          </label>
+        </div>
+      </div>
+        <ul class="errors">
+          <li v-repeat="$data.errors.errorMessages()">
+            {{$value | i18n}}
+          </li>
+        </ul>
+    </li>
+  </ul>
+</div>

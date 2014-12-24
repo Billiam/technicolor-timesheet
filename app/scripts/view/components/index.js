@@ -1,1 +1,2 @@
 require('./ruleList');
+require('./rule');

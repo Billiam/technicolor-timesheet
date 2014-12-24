@@ -11,5 +11,11 @@ var Vue = require('vue');
  * @static
  */
 Vue.filter('i18n', function(value) {
-  return chrome.i18n.getMessage(value);
+  var result = chrome.i18n.getMessage(value);
+
+  if(result === '') {
+    console.log('untranslated key: ' + value);
+  }
+
+  return result;
 });
