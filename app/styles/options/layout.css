@@ -190,12 +190,8 @@ header, section {
     max-width: 738px;
 }
 section {
-    padding-left: 18px;
     margin-top: 8px;
     margin-bottom: 24px;
-}
-section h3 {
-    margin-left: -18px;
 }
 
 body.windows {

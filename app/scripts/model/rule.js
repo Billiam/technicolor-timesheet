@@ -64,6 +64,16 @@ proto.hasErrors = function() {
 };
 
 /**
+ * Fetch error messages
+ * 
+ * @method errorMessages
+ * @returns {String[]}
+ */
+proto.errorMessages = function() {
+  return this.errors.errorMessages();
+};
+
+/**
  * Convert rule data to simple object
  * 
  * @return {Object}

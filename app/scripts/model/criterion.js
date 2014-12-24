@@ -46,14 +46,6 @@ var Criterion = function(data) {
    * @type {Boolean}
    */
   this.regex = data.regex || false;
-
-  /**
-   * Current validation status
-   * 
-   * @property valid
-   * @type {boolean}
-   */
-  this.valid = true;
   
   /**
    * Compare an entry value to the stored criterion value
@@ -74,6 +66,26 @@ var Criterion = function(data) {
 };
 
 var proto = Criterion.prototype;
+
+/**
+ * Whether criterion has any errors
+ * 
+ * @method hasErrors
+ * @returns {boolean}
+ */
+proto.hasErrors = function() {
+  return this.errors.length > 0;
+};
+
+/**
+ * Fetch all error messages
+ * 
+ * @method errorMessages
+ * @returns {String[]}
+ */
+proto.errorMessages = function() {
+  return this.errors.errorMessages();
+};
 
 /**
  * Whether criterion is valid

@@ -29,9 +29,11 @@
     <section >
       <h3>{{* "settings_label" | i18n }}</h3>
       <div v-component="rule-list" rules="{{rules}}"></div>
-      <button v-on="click: addRule">{{* "add_rule_label" | i18n }}</button>
+      <button class="add-rule" v-on="click: addRule">{{* "add_rule_label" | i18n }}</button>
       
-      <button v-on="click: saveRules">{{* "save_rules_label" | i18n}}</button>
+      <div class="form-actions">
+        <button class="form-save" v-on="click: saveRules">{{* "save_rules_label" | i18n}}</button>
+      </div>
     </section>
   </div>
 </body>

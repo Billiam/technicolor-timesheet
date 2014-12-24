@@ -1,8 +1,7 @@
 <div class="rule-container">
   <button title="Delete" v-on="click: removeRule($data)" class="custom-appearance remove-rule"></button>
-
-  <ul class="errors">
-    <li v-repeat="errors">
+  <ul class="errors" v-if="$data.hasErrors()">
+    <li class="error" v-repeat="$data.errorMessages()">
       {{ $value | i18n }}
     </li>
   </ul>
@@ -46,11 +45,11 @@
           </label>
         </div>
       </div>
-        <ul class="errors">
-          <li v-repeat="$data.errors.errorMessages()">
-            {{$value | i18n}}
-          </li>
-        </ul>
+      <ul class="errors" v-if="$data.hasErrors()">
+        <li class="error" v-repeat="$data.errorMessages()">
+          {{$value | i18n}}
+        </li>
+      </ul>
     </li>
   </ul>
 </div>
