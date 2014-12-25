@@ -100,14 +100,11 @@ module.exports = function (grunt) {
 
     // Empties folders to start fresh
     clean: {
-      chrome: {
-      },
       dist: {
         files: [{
           dot: true,
           src: [
-            '<%= config.dist %>/*',
-            '!<%= config.dist %>/.git*'
+            '<%= config.dist %>/*'
           ]
         }]
       }
@@ -142,17 +139,6 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '<%= config.app %>/images',
           src: '{,*/}*.{gif,jpeg,jpg,png}',
-          dest: '<%= config.dist %>/images'
-        }]
-      }
-    },
-
-    svgmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= config.app %>/images',
-          src: '{,*/}*.svg',
           dest: '<%= config.dist %>/images'
         }]
       }
@@ -211,18 +197,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // Run some tasks in parallel to speed up build process
-    concurrent: {
-      chrome: [
-      ],
-      dist: [
-        'imagemin',
-        'svgmin'
-      ],
-      test: [
-      ]
-    },
-
     // Compres dist files to package
     compress: {
       dist: {
@@ -247,7 +221,7 @@ module.exports = function (grunt) {
         description: 'Script documentation',
         url: '<%= pkg.homepage %>',
         options: {
-          themedir: 'node_modules/alloy-apidocs-theme',
+          themedir: 'node_modules/yuidoc-clean-theme',
           paths: '<%= config.app %>/scripts',
           outdir: 'docs/yui'
         }
@@ -270,7 +244,6 @@ module.exports = function (grunt) {
       'clean:dist',
       'copy',
       'browserify',
-      'concurrent:chrome',
       'watch'
     ]);
   });
@@ -278,7 +251,8 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'config:prod',
-    'concurrent:dist',
+    'imagemin',
+    'htmlmin',
     // No UI feature selected, cssmin task will be commented
     // 'cssmin',
     'copy:dist',
