@@ -48,6 +48,10 @@ module.exports = function (grunt) {
           });
         }
       },
+      background: {
+        src: ['<%= config.app %>/scripts/background.js'],
+        dest: '<%= config.dist %>/scripts/background.js'
+      },
       opts: {
         src: ['<%= config.app %>/scripts/options.js'],
         dest: '<%= config.dist %>/scripts/options.js'
@@ -56,18 +60,15 @@ module.exports = function (grunt) {
         src: ['<%= config.app %>/scripts/contentscript.js'],
         dest: '<%= config.dist %>/scripts/contentscript.js'
       }
-      
     },
+    
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       js: {
         files: [
           '<%= config.app %>/scripts/**/*.{js,html}'
         ],
-        tasks: ['jshint', 'browserify'],
-        options: {
-          livereload: true
-        }
+        tasks: ['jshint', 'browserify']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -94,44 +95,6 @@ module.exports = function (grunt) {
       styles: {
         files: ['<%= config.app %>/styles/{,*/}*.css'],
         tasks: ['copy']
-      },
-      livereload: {
-        options: {
-          livereload: '<%= connect.options.livereload %>'
-        },
-        files: [
-          '<%= config.dist %>/{,*/}*.html',
-          '<%= config.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= config.dist %>/manifest.json',
-          '<%= config.dist %>/_locales/{,*/}*.json'
-        ]
-      }
-    },
-
-    // Grunt server and debug server setting
-    connect: {
-      options: {
-        port: 9000,
-        livereload: 35729,
-        // change this to '0.0.0.0' to access the server from outside
-        hostname: 'localhost'
-      },
-      chrome: {
-        options: {
-          open: false,
-          base: [
-            '<%= config.app %>'
-          ]
-        }
-      },
-      test: {
-        options: {
-          open: false,
-          base: [
-            'test',
-            '<%= config.app %>'
-          ]
-        }
       }
     },
 
@@ -225,8 +188,6 @@ module.exports = function (grunt) {
           cwd: '<%= config.app %>',
           dest: '<%= config.dist %>',
           src: [
-            'scripts/chromereload.js',
-            'scripts/reloadreceiver.js',
             'images/{,*/}*.png'
           ]
         }]
@@ -298,10 +259,6 @@ module.exports = function (grunt) {
     grunt.config.merge({config: {uglify: true}});
   });
   
-  grunt.registerTask('config:debug', function() {
-    grunt.config.merge({config: {livereload: true}});
-  });
-  
   grunt.registerTask('test', [
     'connect:test',
     'mocha'
@@ -311,12 +268,9 @@ module.exports = function (grunt) {
     grunt.task.run([
       'jshint',
       'clean:dist',
-      'config:debug',
       'copy',
-      'manifest:debug',
       'browserify',
       'concurrent:chrome',
-      'connect:chrome',
       'watch'
     ]);
   });
@@ -338,24 +292,4 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
-  
-  grunt.registerTask('manifest:debug', function() {
-      var projectFile = grunt.config('config').app + '/manifest.json';
-      var outFile =  grunt.config('config').dist + '/manifest.json';
-    
-      if (!grunt.file.exists(projectFile)) {
-        grunt.log.error('file ' + projectFile + ' could not be found');
-        return false;
-      }
-      
-      var manifest = grunt.file.readJSON(projectFile);
-      manifest.background = {
-        scripts: ['scripts/chromereload.js']
-      };
-    
-      manifest.content_scripts[0].matches.push('http://timesheet.local.dev:8080/*');
-      manifest.content_scripts[0].js.push('scripts/reloadreceiver.js');
-    
-      grunt.file.write(outFile, JSON.stringify(manifest, null, 2));
-    });
 };
