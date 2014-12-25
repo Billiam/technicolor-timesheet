@@ -66,5 +66,11 @@
   },
   "criterion_error_value_required": {
     "message": "Value is required"
+  },
+  "save_success": {
+    "message": "Settings were saved successfully."
+  },
+  "save_error": {
+    "message": "Settings could not be saved"
   }
 }

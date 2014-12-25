@@ -14,6 +14,9 @@ var domready = require('app/service/domready');
 var OptionForm = function(target, data) {
   this.target = target || '#option_form';
   
+  data.message = null;
+  data.messageType = 'success';
+  
   this.formData = data;
 };
 
@@ -76,6 +79,29 @@ proto._reorder = function(oldIndex, newIndex) {
 };
 
 /**
+ * Set a form status message (and remove it later)
+ * 
+ * @method _setMessage
+ * @param {String} message
+ * @param {String} [type=success]
+ * @private
+ */
+proto._setMessage = function(message, type) {
+  clearTimeout(this._messageTimer);
+  
+  if (type == null) {
+    type = 'success';
+  }
+  
+  this.formData.messageType = type;
+  this.formData.message = message;
+  
+  this._messageTimer = setTimeout(function() {
+    this.formData.message = null;
+  }.bind(this), 5000);
+};
+
+/**
  * Persist rules
  * 
  * @method _saveRules
@@ -83,10 +109,10 @@ proto._reorder = function(oldIndex, newIndex) {
  */
 proto._saveRules = function() {
   this.formData.rules.save().then(function() {
-    console.log('save successful');
-  }, function() {
-    console.log('error in save');
-  });
+    this._setMessage('save_success');
+  }.bind(this), function() {
+    this._setMessage('save_error', 'error');
+  }.bind(this));
 };
 
 /**

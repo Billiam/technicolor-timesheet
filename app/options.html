@@ -24,8 +24,12 @@
   </nav>
     <header>
       <h1>{{* "appName" | i18n}}</h1>
-    </header>
     
+      <div class="form-status" v-transition="fade" v-if="message" v-class="messageType">
+        {{ message | i18n }}
+      </div>
+    </header>
+
     <section >
       <h3>{{* "settings_label" | i18n }}</h3>
       <div v-component="rule-list" rules="{{rules}}"></div>

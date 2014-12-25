@@ -2,7 +2,6 @@
 
 var Vue = require('vue');
 var template = require('app/view/template/ruleList');
-var RuleComponent = require('app/view/components/rule');
 var Sortable = require('sortablejs');
 
 /**
@@ -19,10 +18,6 @@ Vue.component('rule-list', {
   },
   
   paramAttributes: ['rules'],
-  
-  components: {
-    rule: RuleComponent
-  },
   
   ready: function() {
     var self = this;

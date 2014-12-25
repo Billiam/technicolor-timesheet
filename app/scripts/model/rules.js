@@ -80,7 +80,7 @@ var proto = Rules.prototype;
  * @return {Promise}
  */
 proto.save = function() {
-  return new Promise(function(resolve, reject) {
+  var promise = new Promise(function(resolve, reject) {
     if ( ! this.isValid()) {
       reject();
       return;
@@ -94,6 +94,11 @@ proto.save = function() {
       resolve();
     });
   }.bind(this));
+  
+  //promise rejection method stub
+  promise.catch(function() { });
+  
+  return promise;
 };
 
 /**

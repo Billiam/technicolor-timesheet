@@ -118,3 +118,21 @@ input[type="text"].error {
     flex-direction: row;
     justify-content: flex-end;
 }
+.form-status {
+    transition: opacity 0.3s;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid transparent;
+    
+    color: #13440D;
+    border-color: #44A537;
+    background-color: #A7EB9E;
+}
+.form-status.error {
+    color: #520D0D;
+    background-color: #F9B3B3;
+    border-color: #C14C4C;
+}
+.form-status.fade-enter, .form-status.fade-leave {
+    opacity: 0;
+}
