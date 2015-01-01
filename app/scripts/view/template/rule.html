@@ -6,19 +6,12 @@
     </li>
   </ul>
   
-  <div class="rule-result">
-    Set the background color to 
-    
+  <div class="rule-result" v-i18n-transclude="form_set_value_label">
     <input type="color" v-model="data.color"/>
-    
-    when
-    
     <select name="type" v-model="criteria.type">
-      <option>any</option>
-      <option>all</option>
+      <option value="any">{{'criteria_type_any_label' | i18n}}</option>
+      <option value="all">{{'criteria_type_all_label' | i18n}}</option>
     </select>
-    
-    of the selected rules match:
   </div>
 
   <div class="errors">

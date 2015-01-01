@@ -7,7 +7,7 @@
     "message": "Technicolor"
   },
   "appDescription": {
-    "message": "Colorize timesheet rows based on rulesets",
+    "message": "Colorize timesheet entries based on rules",
     "description": "The description of the application"
   },
   "criteria_label_client": {
@@ -72,5 +72,14 @@
   },
   "save_error": {
     "message": "Settings could not be saved"
+  },
+  "form_set_value_label": {
+    "message": "Set the background color to %1 when %2 of the selected rules match:"
+  },
+  "criteria_type_any_label": {
+    "message": "any"
+  },
+  "criteria_type_all_label": {
+    "message": "all"
   }
 }

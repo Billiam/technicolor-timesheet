@@ -1,7 +1,7 @@
 'use strict';
 
 var Vue = require('vue');
-
+var translate = require('app/service/translate');
 /**
  * I18n Vue Filter 
  * 
@@ -11,11 +11,5 @@ var Vue = require('vue');
  * @static
  */
 Vue.filter('i18n', function(value) {
-  var result = chrome.i18n.getMessage(value);
-
-  if(result === '') {
-    console.log('untranslated key: ' + value);
-  }
-
-  return result;
+  return translate(value);
 });
