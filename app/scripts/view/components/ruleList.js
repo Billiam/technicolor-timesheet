@@ -25,7 +25,7 @@ Vue.component('rule-list', {
     this.sort = Sortable.create(this.$el, {
       animation: 150,
       draggable: '.ruleset',
-      filter: 'button,input,label',
+      filter: 'button,input,label,select',
       onStart: function() {
         Sortable.utils.toggleClass(self.$el, 'sorting', true);
       },
