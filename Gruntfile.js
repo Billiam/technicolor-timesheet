@@ -77,7 +77,6 @@ module.exports = function (grunt) {
           cwd: '<%= config.app %>'
         },
         files: [
-          'manifest.json',
           '*.{ico,png,txt}',
           'images/{,*/}*.{webp,gif}',
           '*.html',
@@ -87,24 +86,30 @@ module.exports = function (grunt) {
         ],
         tasks: ['copy']
       },
+      manifest: {
+        files: ['manifest.json'],
+        tasks: ['manifest:debug']
+      },
       html: {
-        files: ['<%= config.app %>/{,*/}*.html'],
+        files: ['{,*/}*.html'],
         tasks: ['copy']
       },
       styles: {
-        files: ['<%= config.app %>/styles/{,*/}*.css'],
+        files: ['styles/{,*/}*.css'],
         tasks: ['copy']
       }
     },
-        bump: {
-            options: {
-                files: ['<%= config.app %>/manifest.json', 'package.json'],
-                updateConfigs: [],
-                commit: false,
-                createTag: false,
-                push: false
-            }
-        },
+    
+    bump: {
+      options: {
+        files: ['<%= config.app %>/manifest.json', 'package.json'],
+        updateConfigs: [],
+        commit: false,
+        createTag: false,
+        push: false
+      }
+    },
+    
     // Empties folders to start fresh
     clean: {
       dist: {
@@ -217,6 +222,21 @@ module.exports = function (grunt) {
     }
   });
 
+  grunt.registerTask('manifest:debug', function() {
+    var projectFile = grunt.config('config').app + '/manifest.json';
+    var outFile =  grunt.config('config').dist + '/manifest.json';
+  
+    if (!grunt.file.exists(projectFile)) {
+      grunt.log.error('file ' + projectFile + ' could not be found');
+      return false;
+    }
+    
+    var manifest = grunt.file.readJSON(projectFile);
+    manifest.content_scripts[0].matches.push('http://timesheet.local.dev:8080/*');
+  
+    grunt.file.write(outFile, JSON.stringify(manifest, null, 2));
+  });
+  
   grunt.registerTask('config:prod', function() {
     grunt.config.merge({config: {uglify: true}});
   });
@@ -226,6 +246,7 @@ module.exports = function (grunt) {
       'jshint',
       'clean:dist',
       'copy',
+      'manifest:debug',
       'browserify',
       'watch'
     ]);
@@ -245,4 +266,6 @@ module.exports = function (grunt) {
     'jshint',
     'build'
   ]);
+  
+  
 };
