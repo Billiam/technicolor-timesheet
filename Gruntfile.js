@@ -38,6 +38,11 @@ module.exports = function (grunt) {
           ]);
           
           b.plugin('minifyify', {
+            uglify: {
+              output: {
+                ascii_only: true
+              }
+            },
             minify: grunt.config('config').uglify || false
           });
         }
