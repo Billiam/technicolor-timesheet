@@ -91,7 +91,15 @@ module.exports = function (grunt) {
         tasks: ['copy']
       }
     },
-
+        bump: {
+            options: {
+                files: ['<%= config.app %>/manifest.json', 'package.json'],
+                updateConfigs: [],
+                commit: false,
+                createTag: false,
+                push: false
+            }
+        },
     // Empties folders to start fresh
     clean: {
       dist: {
